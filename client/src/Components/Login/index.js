@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react';
-import API from "../../utils/API";
 import { Redirect } from "react-router-dom";
+import isAuthenticated from '../../utils/isAuthenticated';
 
 const Login = (props) => {
     const usernameRef = useRef();
     const passwordRef = useRef();
-
-    const [isLoggedIn, setIsLoggedIn] = useState(API.isAuthenticated());
+    const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
 
     const handleFormSubmit = event => {
         event.preventDefault();
