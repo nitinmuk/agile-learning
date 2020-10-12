@@ -1,10 +1,11 @@
+const bodyParser = require("body-parser");
 const express = require("express");
 const passport = require("./utils/passport");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(require("./routes/api-routes.js"));

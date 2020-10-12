@@ -37,12 +37,14 @@ passport.use(
 );
 
 passport.use(
+  "jwt",
   new JWTStrategy(
     {
       secretOrKey: "jwt_secret",
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     },
     (jwtPayload, done) => {
+      console.log("Inside JWTStrategy: ", jwtPayload);
       User.findById(jwtPayload.id)
         .then(user => done(null, user))
         .catch(error => done(error, false, { message: "Invalid token" }));
