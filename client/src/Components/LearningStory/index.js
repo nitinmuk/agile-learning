@@ -49,8 +49,18 @@ const LearningStory = (props) => {
             return (
                 <Redirect to="/" />
             );
-        case "inprocess":
-            return (<CircularIndeterminate /> );
+        case "processing":
+            return (
+                <Container component="main" maxWidth="sm">
+                    <CircularIndeterminate />
+                </Container>
+            );
+        case "successMessage":
+            return (
+                <Container component="main" maxWidth="md">
+                <MessageAlert {...props.message}/>
+                </Container>
+            )
         case "init":
         default:
             return (
@@ -62,7 +72,6 @@ const LearningStory = (props) => {
                         <Typography component="h1" variant="h5">
                             Learning Story
                     </Typography>
-                    <MessageAlert {...props.message}/>
                         <form className={classes.form} noValidate>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={8}>
@@ -189,7 +198,8 @@ const LearningStory = (props) => {
                                 onClick={props.handleLearningStory}
                             >
                                 Submit
-                    </Button>
+                            </Button>
+                            <MessageAlert {...props.message} />
                         </form>
                     </div>
                     <Box mt={5}>

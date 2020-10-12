@@ -32,8 +32,10 @@ const Home = (homeProps) => {
         try {
             setLearningStoryStatus("processing");
             await API.saveLearningStory(learningStory);
-            setLearningStoryStatus("done");
-            setMessage({message:`${learningStory.title} created successfully`, severity:"success"})
+            setTimeout(() => setLearningStoryStatus("successMessage"), 500);
+            setMessage({message:`${learningStory.title} learning story created successfully`, severity:"success"})
+            // wait for 2 seconds
+            setTimeout(() => setLearningStoryStatus("done"), 2000);
         } catch (error) {
             console.log("Error", error);
             setMessage({message:"Failed To Create Learning Story. Please try again.", severity:"error"})
