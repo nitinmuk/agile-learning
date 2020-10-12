@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import "./App.css";
 import SignUp from "./Components/SignUp";
@@ -38,6 +38,7 @@ const App = () => {
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);
+        setStudentUser(response.data.student);
       }
     } catch (error) {
       console.log("Error", error);
@@ -54,6 +55,10 @@ const App = () => {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);
+        setStudentUser(response.data.student);
+      }
+      else {
+        console.log(response);
       }
     } catch (error) {
       setError({ message: "Invalid Email or password", severity: "error" });
@@ -66,6 +71,14 @@ const App = () => {
         passwordRef.current.value = "";
       }
     }
+  }
+  /**
+   * handler to logout user 
+   * @param {event} event 
+   */
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
   }
   return (
     <React.Fragment>
@@ -89,8 +102,17 @@ const App = () => {
               emailRef={emailRef} passwordRef={passwordRef}
               error={error} />)}
         />
-        <PrivateRoute exact path="/" component={Home} />
-        <Route exact path="/logout" component={Logout} />
+        <PrivateRoute
+          path="/"
+          handleLogout={handleLogout}
+          component={Home}
+          studentUser={studentUser}
+        />
+        <Route exact path="/logout"
+          render={(props =>
+            <Logout {...props}
+              handleLogout={handleLogout} />)}
+        />
       </Switch>
     </React.Fragment>
   );
