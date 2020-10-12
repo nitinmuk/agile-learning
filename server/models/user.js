@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// Requiring bcrypt for password hashing. Using the bcryptjs version as the regular bcrypt module sometimes causes errors on Windows machines
+// Requiring bcrypt for password hashing.
 const bcrypt = require("bcryptjs");
 // Creating our User model
 const UserSchema = new Schema({
@@ -23,13 +23,31 @@ const UserSchema = new Schema({
     type: String,
     required: "password is required"
   },
-  userType: {
-    type: String,
-    required: "user type is required"
+  student: {
+    type: Boolean,
+    default: true
+  },
+  instructor: {
+    type: Boolean,
+    default: false
   },
   userProfileLink: {
     type: String
-  }
+  },
+  // a student user will have list of stories subscribed by the user
+  subscribedStories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "LearningStory"
+    }
+  ],
+  // a instructor user will have stories created by the user
+  learningStories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "LearningStory"
+    }
+  ]
 });
 //This will check if an unhashed password entered by the user can be compared to the hashed password stored in our database
 UserSchema.methods.validPassword = function(password) {
@@ -52,12 +70,6 @@ UserSchema.pre("save", function(next) {
   this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10), null);
   return next();
 });
-
-/*UserSchema.methods.login = function(password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, this.password, error => error ? reject(error) : resolve(this));
-  })
-}*/
 
 const User = mongoose.model("User", UserSchema);
 
