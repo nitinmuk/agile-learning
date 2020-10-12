@@ -4,6 +4,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const passportJwt = require("passport-jwt");
 const ExtractJwt = passportJwt.ExtractJwt;
 const JWTStrategy = passportJwt.Strategy;
+require("dotenv").config();
 
 // Telling passport we want to use a Local Strategy. In other words, we want login with a username/email and password
 passport.use(
@@ -40,11 +41,10 @@ passport.use(
   "jwt",
   new JWTStrategy(
     {
-      secretOrKey: "jwt_secret",
+      secretOrKey: process.env.JWT_SECRET,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     },
     (jwtPayload, done) => {
-      console.log("Inside JWTStrategy: ", jwtPayload);
       User.findById(jwtPayload.id)
         .then(user => done(null, user))
         .catch(error => done(error, false, { message: "Invalid token" }));
