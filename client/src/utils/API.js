@@ -1,9 +1,21 @@
 import axios from "axios";
+import isAuthenticated from "./isAuthenticated";
 export default {
-    signUpUser : function(user) {
+    getAxios : function() {
+        return axios.create({
+            headers: {'Authorization': `Bearer ${isAuthenticated()}`}
+        });
+    },
+    signUpUser: function (user) {
         return axios.post("/api/signup", user);
     },
-    login : function(userDetails) {
+    login: function (userDetails) {
         return axios.post("/api/login", userDetails);
+    },
+    getUser: function () {
+        return this.getAxios().get("/api/user");
+    },
+    saveLearningStory: function (learningStory) {
+        return this.getAxios().post("/api/learningStory", learningStory);
     }
 }
