@@ -19,7 +19,7 @@ router.post("/api/login", (request, response, next) => {
       response.status(401).send(info.message);
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-      response.json({ token: token });
+      response.json({ token, student: user.student });
     }
   })(request, response, next);
 });
@@ -32,7 +32,7 @@ router.post("/api/signup", async ({ body }, response) => {
   try {
     const user = await User.create(body);
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    response.status(201).json({ token });
+    response.status(201).json({ token, student: user.student });
   } catch (error) {
     console.log("Error", error);
     response.status(500).json("Couldn't create user");
