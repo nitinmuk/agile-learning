@@ -13,7 +13,7 @@ import API from "./utils/API";
 const App = () => {
   const [studentUser, setStudentUser] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
-  const [error, setError] = useState({ message: "", severity: "" });
+  const [message, setMessage] = useState();
   const fNameRef = useRef("");
   const lNameRef = useRef("");
   const emailRef = useRef("");
@@ -61,7 +61,7 @@ const App = () => {
         console.log(response);
       }
     } catch (error) {
-      setError({ message: "Invalid Email or password", severity: "error" });
+      setMessage({ message: "Invalid Email or password", severity: "error" });
     }
     finally {
       if (emailRef.current) {
@@ -100,7 +100,7 @@ const App = () => {
               isLoggedIn={isLoggedIn}
               handleLogin={handleLogin}
               emailRef={emailRef} passwordRef={passwordRef}
-              error={error} />)}
+              error={message} />)}
         />
         <PrivateRoute
           path="/"

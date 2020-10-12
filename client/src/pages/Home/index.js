@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Navigation from "../../Components/Navigation";
 import { Route, Switch } from 'react-router-dom';
 import LearningStory from "../../Components/LearningStory";
@@ -13,7 +13,9 @@ const Home = (homeProps) => {
     const storyStatusRef = useRef("");
     const storyContentRef = useRef("");
     const storyNoteRef = useRef("");
-    const urlRef = useRef("");    
+    const urlRef = useRef("");
+    const [learningStoryStatus, setLearningStoryStatus] = useState("init");
+    const [message, setMessage] = useState();    
     const handleLearningStory = async event => {
         event.preventDefault();
         event.stopPropagation();
@@ -28,9 +30,13 @@ const Home = (homeProps) => {
             sessionLink: urlRef.current.value
         }
         try {
+            setLearningStoryStatus("processing");
             await API.saveLearningStory(learningStory);
+            setLearningStoryStatus("done");
+            setMessage({message:`${learningStory.title} created successfully`, severity:"success"})
         } catch (error) {
             console.log("Error", error);
+            setMessage({message:"Failed To Create Learning Story. Please try again.", severity:"error"})
         }
     }
     return (
@@ -49,6 +55,8 @@ const Home = (homeProps) => {
                     urlRef={urlRef}
                     handleLearningStory={handleLearningStory}
                     component={LearningStory}
+                    learningStoryStatus={learningStoryStatus}
+                    message={message}
                 />
                 <Route
                     exact

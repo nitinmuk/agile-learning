@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 // severity could be error/warning/info/success
 const MessageAlert = ({message, severity}) => {
   const classes = useStyles();
-  if(message !== "") {
+  if(message) {
     return (
         <div className={classes.root}>
           <Alert severity={severity}>{message}</Alert>
