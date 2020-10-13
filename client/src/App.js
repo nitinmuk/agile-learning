@@ -18,7 +18,9 @@ const App = () => {
   const lNameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
-
+  /**
+   * calls getUser API to initialize studentUser
+   */
   const initStudentUser = async () => {
     try {
       const response = await API.getUser();
@@ -30,10 +32,17 @@ const App = () => {
   if(isLoggedIn) {
     initStudentUser();
   }
-
+  /**
+   * setting studentUser based on user selection during sign up
+   * @param {switch event} event 
+   */
   const handleStudentUser = event => {
     setStudentUser(event.target.checked);
   }
+  /**
+   * handles signup event by calling signUpUser API
+   * @param {signup submit} event 
+   */
   const handleSignUp = async (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -56,6 +65,12 @@ const App = () => {
       console.log("Error", error);
     }
   }
+  /**
+   * handles event about user submitting login request
+   * if login is successful then store jwt token in local storage
+   * @TODO: move jwt token to react state from local storage
+   * @param {login event} event 
+   */
   const handleLogin = async event => {
     event.preventDefault();
     event.stopPropagation();
