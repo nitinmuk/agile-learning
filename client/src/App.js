@@ -11,7 +11,7 @@ import isAuthenticated from "./utils/isAuthenticated";
 import API from "./utils/API";
 
 const App = () => {
-  const [studentUser, setStudentUser] = useState();
+  const [studentUser, setStudentUser] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
   const [message, setMessage] = useState();
   const fNameRef = useRef("");

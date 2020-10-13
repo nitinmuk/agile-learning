@@ -5,6 +5,7 @@ import LearningStory from "../../Components/LearningStory";
 import PrivateRoute from '../../Components/PrivateRoute';
 import API from '../../utils/API';
 import Logout from "../../Components/Logout";
+import LearningStoriesContainer from '../LearningStoriesContainer';
 const Home = (homeProps) => {
     const titleRef = useRef("");
     const sessionCountRef = useRef("");
@@ -15,7 +16,7 @@ const Home = (homeProps) => {
     const storyNoteRef = useRef("");
     const urlRef = useRef("");
     const [learningStoryStatus, setLearningStoryStatus] = useState("init");
-    const [message, setMessage] = useState();    
+    const [message, setMessage] = useState();
     const handleLearningStory = async event => {
         event.preventDefault();
         event.stopPropagation();
@@ -33,12 +34,12 @@ const Home = (homeProps) => {
             setLearningStoryStatus("processing");
             await API.saveLearningStory(learningStory);
             setTimeout(() => setLearningStoryStatus("successMessage"), 500);
-            setMessage({message:`${learningStory.title} learning story created successfully`, severity:"success"})
+            setMessage({ message: `${learningStory.title} learning story created successfully`, severity: "success" })
             // wait for 2 seconds
             setTimeout(() => setLearningStoryStatus("done"), 2000);
         } catch (error) {
             console.log("Error", error);
-            setMessage({message:"Failed To Create Learning Story. Please try again.", severity:"error"})
+            setMessage({ message: "Failed To Create Learning Story. Please try again.", severity: "error" })
         }
     }
     return (
@@ -59,6 +60,10 @@ const Home = (homeProps) => {
                     component={LearningStory}
                     learningStoryStatus={learningStoryStatus}
                     message={message}
+                />
+                <PrivateRoute
+                    path="/review-learning-stories"
+                    component={LearningStoriesContainer}
                 />
                 <Route
                     exact

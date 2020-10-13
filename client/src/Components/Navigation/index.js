@@ -19,6 +19,8 @@ export function Navigation({ relevantLinks }) {
                 return "SignIn";
             case "logOut":
                 return "SignOut";
+            case "reviewLearningStory":
+                return "review Learning Story"
             default:
                 return linkName;
         }
@@ -35,6 +37,8 @@ export function Navigation({ relevantLinks }) {
                 return "/login";
             case "logOut":
                 return "/logout";
+            case "reviewLearningStory":
+                return "/review-learning-stories";
             default:
                 return linkName;
         }

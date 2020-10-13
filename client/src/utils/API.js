@@ -17,5 +17,8 @@ export default {
     },
     saveLearningStory: function (learningStory) {
         return this.getAxios().post("/api/learningStory", learningStory);
+    },
+    getLearningStories: function () {
+        return this.getAxios().get("/api/learningStories");
     }
 }
