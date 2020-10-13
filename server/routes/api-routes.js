@@ -88,6 +88,37 @@ router.post("/api/learningStory", (request, response, next) => {
   )(request, response, next);
 });
 
+/**
+ * route to create learning story for instructors
+ */
+router.get("/api/learningStories", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log(error);
+      }
+      if (info !== undefined) {
+        console.log(info.message);
+        response.status(401).send(info.message);
+      } else {
+        try {
+          const learningStories = await LearningStory.find({
+            _id: {
+              $in: user.learningStories
+            }
+          });
+          response.json(learningStories);
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
 // Send every request to the React app
 // Define any API routes before this runs
 router.get("*", (request, response) => {
