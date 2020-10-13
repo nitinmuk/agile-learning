@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import "./App.css";
 import SignUp from "./Components/SignUp";
@@ -11,13 +11,25 @@ import isAuthenticated from "./utils/isAuthenticated";
 import API from "./utils/API";
 
 const App = () => {
-  const [studentUser, setStudentUser] = useState(true);
+  const [studentUser, setStudentUser] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
   const [message, setMessage] = useState();
   const fNameRef = useRef("");
   const lNameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
+
+  const initStudentUser = async () => {
+    try {
+      const response = await API.getUser();
+      setStudentUser(response.data.student);      
+    } catch(error) {
+      console.log(error);
+    }
+  }
+  if(isLoggedIn) {
+    initStudentUser();
+  }
 
   const handleStudentUser = event => {
     setStudentUser(event.target.checked);
