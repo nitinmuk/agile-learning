@@ -5,6 +5,10 @@ const LearningStorySchema = new Schema({
     type: String,
     trim: true
   },
+  creationDate: {
+    type: Date,
+    default: new Date()
+  },
   content: {
     type: String,
     trim: true

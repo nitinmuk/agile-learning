@@ -109,6 +109,10 @@ router.get("/api/learningStories", (request, response, next) => {
               $in: user.learningStories
             }
           });
+          learningStories.sort(
+            (ls1, ls2) =>
+              new Date(ls2.creationDate) - new Date(ls1.creationDate)
+          );
           response.json(learningStories);
         } catch (error) {
           console.log("Error", error);
