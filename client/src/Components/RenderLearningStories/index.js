@@ -71,6 +71,9 @@ const RenderLearningStories = ({ learningStories }) => {
                     <div className={classes.column}>
                         <Typography className={classes.secondaryHeading}>{ls.startDate}</Typography>
                     </div>
+                    <div className={classes.column}>
+                        <Typography className={classes.secondaryHeading}>{ls.status}</Typography>
+                    </div>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>                                       
                     <div>  
