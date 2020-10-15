@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -44,6 +44,26 @@ const useStyles = makeStyles((theme) => ({
 
 const LearningStory = (props) => {
     const classes = useStyles();
+    useEffect(() => {
+        initLearningStory()
+    },[]);
+    
+    /**
+     * intialize various form fields with learning story sent as prop
+     */
+    function initLearningStory() {
+        if(props.learningStoryToEdit && props.titleRef.current) {
+            props.titleRef.current.value = props.learningStoryToEdit.title;
+            props.storyContentRef.current.value = props.learningStoryToEdit.content;
+            props.sessionCountRef.current.value = props.learningStoryToEdit.sessionCount;
+            props.subjectRef.current.value = props.learningStoryToEdit.subject;
+            props.startDateRef.current.value = props.learningStoryToEdit.startDate;
+            props.startTimeRef.current.value = props.learningStoryToEdit.startTime;
+            props.storyStatusRef.current.value = props.learningStoryToEdit.status;
+            props.storyNoteRef.current.value = props.learningStoryToEdit.notes;
+            props.urlRef.current.value = props.learningStoryToEdit.sessionLink;
+        }        
+    }
     switch (props.learningStoryStatus) {
         case "done":
             return (
@@ -100,35 +120,35 @@ const LearningStory = (props) => {
                                         inputRef={props.sessionCountRef}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={3}>
                                     <FormControl className={classes.formControl}>
                                         <InputLabel id="subject">Subject</InputLabel>
                                         <Select
                                             labelId="Subject"
                                             id="subject"
                                             required
-                                            defaultValue="computerScience"
+                                            defaultValue="Computer Science"
                                             inputRef={props.subjectRef}
                                         >
-                                            <MenuItem value={"chemistry"}>Chemistry</MenuItem>
-                                            <MenuItem value={"computerScience"}>Computer Science</MenuItem>
-                                            <MenuItem value={"english"}>English</MenuItem>
-                                            <MenuItem value={"hindi"}>Hindi</MenuItem>
+                                            <MenuItem value={"Chemistry"}>Chemistry</MenuItem>
+                                            <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
+                                            <MenuItem value={"English"}>English</MenuItem>
+                                            <MenuItem value={"Hindi"}>Hindi</MenuItem>
                                             <MenuItem value={"Maths"}>Maths</MenuItem>
                                             <MenuItem value={"physics"}>Physics</MenuItem>
-                                            <MenuItem value={"other"}>Other</MenuItem>
+                                            <MenuItem value={"Other"}>Other</MenuItem>
                                         </Select>
                                         <FormHelperText>Select Related Subject</FormHelperText>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={3}>
                                     <TextField
                                         variant="outlined"
                                         required
                                         fullWidth
-                                        type="datetime-local"
+                                        type="date"
                                         id="startDate"
-                                        label="Start Date & Time"
+                                        label="Start Date"
                                         helperText="when will be the first session?"
                                         InputLabelProps={{
                                             shrink: true,
@@ -136,7 +156,22 @@ const LearningStory = (props) => {
                                         inputRef={props.startDateRef}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={3}>
+                                    <TextField
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        type="time"
+                                        id="time"
+                                        label="time"
+                                        helperText="at what time will be the first session?"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputRef={props.startTimeRef}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={3}>
                                     <FormControl className={classes.formControl}>
                                         <InputLabel id="storyStatus">Status</InputLabel>
                                         <Select

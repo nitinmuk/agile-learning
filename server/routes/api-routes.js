@@ -71,7 +71,8 @@ router.post("/api/learningStory", (request, response, next) => {
           const body = request.body;
           const learningStory = await LearningStory.create({
             ...body,
-            instructor: user._id
+            instructor: user._id,
+            creationDate: Date.now()
           });
           await User.findByIdAndUpdate(
             user._id,
@@ -89,7 +90,40 @@ router.post("/api/learningStory", (request, response, next) => {
 });
 
 /**
- * route to create learning story for instructors
+ * route to update learning story corresponding to given id
+ */
+router.put("/api/learningStory/:id", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log(error);
+      }
+      if (info !== undefined) {
+        console.log(info.message);
+        response.status(401).send(info.message);
+      } else {
+        try {
+          const body = request.body;
+          await LearningStory.update(
+            {
+              _id: request.params.id
+            },
+            body
+          );
+          response.status(204).end();
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
+/**
+ * route to fetch learning stories created by current user
  */
 router.get("/api/learningStories", (request, response, next) => {
   passport.authenticate(
@@ -109,10 +143,10 @@ router.get("/api/learningStories", (request, response, next) => {
               $in: user.learningStories
             }
           });
-          learningStories.sort(
-            (ls1, ls2) =>
-              new Date(ls2.creationDate) - new Date(ls1.creationDate)
-          );
+          learningStories.sort((ls1, ls2) => {
+            const val = parseInt(ls2.creationDate) - parseInt(ls1.creationDate);
+            return val;
+          });
           response.json(learningStories);
         } catch (error) {
           console.log("Error", error);

@@ -6,8 +6,8 @@ const LearningStorySchema = new Schema({
     trim: true
   },
   creationDate: {
-    type: Date,
-    default: new Date()
+    type: String,
+    default: Date.now()
   },
   content: {
     type: String,
@@ -17,7 +17,10 @@ const LearningStorySchema = new Schema({
     type: Number
   },
   startDate: {
-    type: Date
+    type: String
+  },
+  startTime: {
+    type: String
   },
   status: {
     type: String,

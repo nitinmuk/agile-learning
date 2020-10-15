@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from 'react-router-dom'
-export function Navigation({ relevantLinks }) {
+import { Link } from 'react-router-dom';
+export function Navigation({ relevantLinks, restoreState }) {
     const prepareLinks = () => {
         if (relevantLinks) {
             return relevantLinks.map(link => 
-            <li key={link} style={{ margin: "0 1em" }}><Link to={getLink(link)}>{getCaption(link)}</Link></li>);
+            <li key={link} style={{ margin: "0 1em" }}><Link to={getLink(link)} onClick={restoreState}>{getCaption(link)}</Link></li>);
         }
     }
     const getCaption = (linkName) => {

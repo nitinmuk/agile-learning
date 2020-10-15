@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navigation from "../../Components/Navigation";
 import { Route, Switch } from 'react-router-dom';
 import LearningStory from "../../Components/LearningStory";
@@ -11,12 +11,40 @@ const Home = (homeProps) => {
     const sessionCountRef = useRef("");
     const subjectRef = useRef("");
     const startDateRef = useRef("");
+    const startTimeRef = useRef("");
     const storyStatusRef = useRef("");
     const storyContentRef = useRef("");
     const storyNoteRef = useRef("");
     const urlRef = useRef("");
     const [learningStoryStatus, setLearningStoryStatus] = useState("init");
     const [message, setMessage] = useState();
+    const [learningStoryToEdit, setLearningStoryToEdit] = useState();
+    /**
+     * home will not unmount and user can toggle
+     * between review and create learning story action
+     * therefore, a handler method to clear state related to
+     * screen toggle which will be trigerred once user click any navigation link
+     */
+    const restoreState = () => {
+        setLearningStoryStatus("init");
+        setMessage(undefined);
+        setLearningStoryToEdit(undefined);
+        if (titleRef.current) {
+            titleRef.current.value = "";
+            sessionCountRef.current.value = "";
+            subjectRef.current.value = "";
+            startDateRef.current.value = "";
+            startTimeRef.current.value = "";
+            storyStatusRef.current.value = "";
+            storyContentRef.current.value = "";
+            storyNoteRef.current.value = "";
+            urlRef.current.value = "";
+        }
+    }
+    /**
+     * a handler to handle learning story creation and update.
+     * @param {learning story submit} event 
+     */
     const handleLearningStory = async event => {
         event.preventDefault();
         event.stopPropagation();
@@ -26,15 +54,21 @@ const Home = (homeProps) => {
             sessionCount: sessionCountRef.current.value,
             subject: subjectRef.current.value,
             startDate: startDateRef.current.value,
+            startTime: startTimeRef.current.value,
             status: storyStatusRef.current.value,
             notes: storyNoteRef.current.value,
             sessionLink: urlRef.current.value
         }
         try {
             setLearningStoryStatus("processing");
-            await API.saveLearningStory(learningStory);
+            if (learningStoryToEdit) {
+                await API.updateLearningStory(learningStoryToEdit._id, learningStory);
+            }
+            else {
+                await API.createLearningStory(learningStory);
+            }
             setTimeout(() => setLearningStoryStatus("successMessage"), 500);
-            setMessage({ message: `${learningStory.title} learning story created successfully`, severity: "success" })
+            setMessage({ message: `${learningStory.title} learning story ${learningStoryToEdit ? "updated" : "created"} successfully`, severity: "success" })
             // wait for 2 seconds
             setTimeout(() => setLearningStoryStatus("done"), 2000);
         } catch (error) {
@@ -42,15 +76,25 @@ const Home = (homeProps) => {
             setMessage({ message: "Failed To Create Learning Story. Please try again.", severity: "error" })
         }
     }
+    /**
+     * once user clicks edit, this function will prepopulate data as
+     * fetched from database.
+     * @param {story id which user wants to edit} id 
+     */
+    const handleEditStory = learningStory => {
+        setLearningStoryToEdit(learningStory);
+    }
     return (
         <React.Fragment>
-            <Navigation relevantLinks={getRelevantLinks()} />
+            <Navigation relevantLinks={getRelevantLinks()}
+                restoreState={restoreState} />
             <Switch>
                 <PrivateRoute
                     path="/learningStory"
                     titleRef={titleRef}
                     sessionCountRef={sessionCountRef}
                     startDateRef={startDateRef}
+                    startTimeRef={startTimeRef}
                     subjectRef={subjectRef}
                     storyStatusRef={storyStatusRef}
                     storyContentRef={storyContentRef}
@@ -60,10 +104,12 @@ const Home = (homeProps) => {
                     component={LearningStory}
                     learningStoryStatus={learningStoryStatus}
                     message={message}
+                    learningStoryToEdit={learningStoryToEdit}
                 />
                 <PrivateRoute
                     path="/review-learning-stories"
                     component={LearningStoriesContainer}
+                    handleEditStory={handleEditStory}
                 />
                 <Route
                     exact

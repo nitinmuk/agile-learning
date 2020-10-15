@@ -15,10 +15,13 @@ export default {
     getUser: function () {
         return this.getAxios().get("/api/user");
     },
-    saveLearningStory: function (learningStory) {
+    createLearningStory: function (learningStory) {
         return this.getAxios().post("/api/learningStory", learningStory);
     },
     getLearningStories: function () {
         return this.getAxios().get("/api/learningStories");
+    },
+    updateLearningStory: function(id, learningStory) {
+        return this.getAxios().put(`/api/learningStory/${id}`, learningStory);
     }
 }

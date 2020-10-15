@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import { Container } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const RenderLearningStories = ({ learningStories }) => {
+const RenderLearningStories = ({ learningStories, handleEditStory }) => {
     const classes = useStyles();
 
     return (
@@ -84,7 +85,9 @@ const RenderLearningStories = ({ learningStories }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button size="small" variant="contained" color="primary">EDIT</Button>
+                    <Button size="small" variant="contained" color="primary" onClick={() => handleEditStory(ls)}>
+                        <Link to="/learningStory" style={{color:"white"}}>EDIT</Link>
+                    </Button>
                     <Button size="small" variant="contained" color="secondary">DELETE</Button>
                 </AccordionActions>
             </Accordion>
