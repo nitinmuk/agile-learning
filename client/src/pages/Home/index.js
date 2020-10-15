@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Navigation from "../../Components/Navigation";
 import { Route, Switch } from 'react-router-dom';
 import LearningStory from "../../Components/LearningStory";

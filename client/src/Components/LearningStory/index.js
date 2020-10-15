@@ -53,6 +53,7 @@ const LearningStory = (props) => {
      */
     function initLearningStory() {
         if(props.learningStoryToEdit && props.titleRef.current) {
+            console.log(props.learningStoryToEdit);
             props.titleRef.current.value = props.learningStoryToEdit.title;
             props.storyContentRef.current.value = props.learningStoryToEdit.content;
             props.sessionCountRef.current.value = props.learningStoryToEdit.sessionCount;
@@ -181,8 +182,8 @@ const LearningStory = (props) => {
                                             inputRef={props.storyStatusRef}
                                         >
                                             <MenuItem value={"draft"}>Draft</MenuItem>
-                                            <MenuItem value={"publish"}>Publish</MenuItem>
-                                            <MenuItem value={"cancel"}>Cancel</MenuItem>
+                                            <MenuItem value={"published"}>Publish</MenuItem>
+                                            <MenuItem value={"cancelled"}>Cancel</MenuItem>
                                         </Select>
                                         <FormHelperText>publish once all fields are populated</FormHelperText>
                                     </FormControl>

@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const RenderLearningStories = ({ learningStories, handleEditStory }) => {
+const RenderLearningStories = ({ learningStories, handleEditStory, handleDeleteStory }) => {
     const classes = useStyles();
 
     return (
@@ -88,7 +88,9 @@ const RenderLearningStories = ({ learningStories, handleEditStory }) => {
                     <Button size="small" variant="contained" color="primary" onClick={() => handleEditStory(ls)}>
                         <Link to="/learningStory" style={{color:"white"}}>EDIT</Link>
                     </Button>
-                    <Button size="small" variant="contained" color="secondary">DELETE</Button>
+                    <Button size="small" variant="contained" color="secondary" onClick={() => handleDeleteStory(ls._id)}>
+                        DELETE
+                    </Button>
                 </AccordionActions>
             </Accordion>
         )

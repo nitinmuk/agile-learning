@@ -23,5 +23,8 @@ export default {
     },
     updateLearningStory: function(id, learningStory) {
         return this.getAxios().put(`/api/learningStory/${id}`, learningStory);
+    },
+    deleteLearningStory: function(id) {
+        return this.getAxios().delete(`/api/learningStory/${id}`);
     }
 }
