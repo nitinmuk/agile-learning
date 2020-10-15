@@ -106,7 +106,7 @@ router.put("/api/learningStory/:id", (request, response, next) => {
       } else {
         try {
           const body = request.body;
-          await LearningStory.update(
+          await LearningStory.updateOne(
             {
               _id: request.params.id
             },
@@ -148,6 +148,62 @@ router.get("/api/learningStories", (request, response, next) => {
             return val;
           });
           response.json(learningStories);
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
+/**
+ * route to delete learning story for instructors
+ * removes learning story and update all users reference
+ * i.e. subscribers as well as publisher user
+ */
+router.delete("/api/learningStory/:id", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log(error);
+      }
+      if (info !== undefined) {
+        console.log(info.message);
+        response.status(401).send(info.message);
+      } else {
+        try {
+          await LearningStory.findByIdAndRemove(
+            request.params.id,
+            (error, ls) => {
+              if (error) {
+                console.log("Error", error);
+              } else {
+                const userIds = ls.subscribers;
+                if (userIds && userIds.length) {
+                  // updating other user without waiting for it to finish
+                  // as this action is not relevant for current user.
+                  userIds.forEach(userId => {
+                    //@TODO notify each subscribed user
+                    //about the story getting removed
+                    User.findByIdAndUpdate(
+                      userId,
+                      { $pull: { subscribedStories: ls._id } },
+                      { new: true }
+                    );
+                  });
+                }
+              }
+            }
+          );
+          await User.findByIdAndUpdate(
+            user._id,
+            { $pull: { learningStories: request.params.id } },
+            { new: true }
+          );
+          response.status(204).end();
         } catch (error) {
           console.log("Error", error);
           response.status(500).end();
