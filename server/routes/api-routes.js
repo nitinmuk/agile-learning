@@ -16,7 +16,7 @@ router.post("/api/login", (request, response, next) => {
     }
     if (info !== undefined) {
       console.log(info.message);
-      response.status(401).send(info.message);
+      response.status(401).send("Authentication Failed");
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       response.json({ token, student: user.student });
