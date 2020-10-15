@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const RenderLearningStories = ({ learningStories, handleEditStory, handleDeleteStory }) => {
+const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteStory }) => {
     const classes = useStyles();
 
     return (
@@ -98,4 +98,4 @@ const RenderLearningStories = ({ learningStories, handleEditStory, handleDeleteS
 }
 
 
-export default RenderLearningStories;
+export default LearningStoryListItem;
