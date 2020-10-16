@@ -22,7 +22,7 @@ const Home = (homeProps) => {
             <Navigation relevantLinks={getRelevantLinks()} />
             <Switch>
                 <Route path="/createLearningStory">
-                <NewLearningStoryContainer />
+                    <NewLearningStoryContainer />
                 </Route>
                 <Route
                     path="/editLearningStory"
@@ -31,10 +31,12 @@ const Home = (homeProps) => {
                             learningStoryToEdit={learningStoryToEdit}
                         />)}
                 />
-                <PrivateRoute
+                <Route
                     path="/reviewLearningStory"
-                    component={LearningStoriesContainer}
-                    handleEditStory={handleEditStory}
+                    render={(props =>
+                        <LearningStoriesContainer {...props}
+                            handleEditStory={handleEditStory}
+                        />)}
                 />
                 <Route
                     path="/logout"
