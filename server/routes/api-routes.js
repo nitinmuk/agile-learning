@@ -65,7 +65,7 @@ router.post("/api/learningStory", (request, response, next) => {
       }
       if (info !== undefined) {
         console.log(info.message);
-        response.status(401).send(info.message);
+        response.status(401).send("Authentication Failed");
       } else {
         try {
           const body = request.body;
@@ -102,7 +102,7 @@ router.put("/api/learningStory/:id", (request, response, next) => {
       }
       if (info !== undefined) {
         console.log(info.message);
-        response.status(401).send(info.message);
+        response.status(401).send("Authentication Failed");
       } else {
         try {
           const body = request.body;
@@ -135,7 +135,7 @@ router.get("/api/learningStories", (request, response, next) => {
       }
       if (info !== undefined) {
         console.log(info.message);
-        response.status(401).send(info.message);
+        response.status(401).send("Authentication Failed");
       } else {
         try {
           const learningStories = await LearningStory.find({
@@ -172,7 +172,7 @@ router.delete("/api/learningStory/:id", (request, response, next) => {
       }
       if (info !== undefined) {
         console.log(info.message);
-        response.status(401).send(info.message);
+        response.status(401).send("Authentication Failed");
       } else {
         try {
           await LearningStory.findByIdAndRemove(
