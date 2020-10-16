@@ -4,7 +4,6 @@ import "./App.css";
 import SignUp from "./Components/SignUp";
 import Home from "./pages/Home";
 import Login from "./Components/Login";
-import Logout from "./Components/Logout";
 import PrivateRoute from "./Components/PrivateRoute";
 import CssBaseLine from "@material-ui/core/CssBaseline";
 import isAuthenticated from "./utils/isAuthenticated";
@@ -121,7 +120,7 @@ const App = () => {
               handleStudentUser={handleStudentUser}
               fNameRef={fNameRef} lNameRef={lNameRef} emailRef={emailRef} passwordRef={passwordRef} />)}
         />
-        <Route exact path="/login"
+        <Route path="/login"
           render={(props =>
             <Login {...props}
               isLoggedIn={isLoggedIn}
@@ -134,11 +133,6 @@ const App = () => {
           handleLogout={handleLogout}
           component={Home}
           studentUser={studentUser}
-        />
-        <Route exact path="/logout"
-          render={(props =>
-            <Logout {...props}
-              handleLogout={handleLogout} />)}
         />
       </Switch>
     </React.Fragment>
