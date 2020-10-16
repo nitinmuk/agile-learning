@@ -183,9 +183,11 @@ const LearningStory = (props) => {
                                             inputRef={props.storyStatusRef}
                                             renderValue={() => {
                                                 switch (props.storyStatusRef.current.value) {
+                                                    default:
                                                     case "draft": return "Draft";
                                                     case "published": return "Publish";
                                                     case "cancelled": return "Cancel";
+                                                    
                                                 }
                                             }}
                                             onChange={event => props.storyStatusRef.current.value = event.target.value}
