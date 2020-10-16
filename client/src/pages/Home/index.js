@@ -3,10 +3,10 @@ import Navigation from "../../Components/Navigation";
 import { Route, Switch } from 'react-router-dom';
 import NewLearningStoryContainer from "../../Components/NewLearningStoryContainer";
 import ExistingLearningStoryContainer from "../../Components/ExistingLearningStoryContainer";
-import PrivateRoute from '../../Components/PrivateRoute';
-
 import Logout from "../../Components/Logout";
 import LearningStoriesContainer from '../LearningStoriesContainer';
+import AvailableLearningStoryContainer from '../AvailableLearningStoryContainer';
+
 const Home = (homeProps) => {
     const [learningStoryToEdit, setLearningStoryToEdit] = useState();
     /**
@@ -15,6 +15,9 @@ const Home = (homeProps) => {
      * @param {story id which user wants to edit} id 
      */
     const handleEditStory = learningStory => {
+        setLearningStoryToEdit(learningStory);
+    }
+    const handleViewStory = learningStory => {
         setLearningStoryToEdit(learningStory);
     }
     return (
@@ -39,6 +42,13 @@ const Home = (homeProps) => {
                         />)}
                 />
                 <Route
+                    path="/browseAvailableStories"
+                    render={(props =>
+                        <AvailableLearningStoryContainer {...props}
+                            handleViewStory={handleViewStory}
+                        />)}
+                />
+                <Route
                     path="/logout"
                     render={(props =>
                         <Logout {...props}
@@ -51,7 +61,7 @@ const Home = (homeProps) => {
 
     function getRelevantLinks() {
         if (homeProps.studentUser) {
-            return ["subscribedStories", "searchStories", "logOut", "home"]
+            return ["subscribedStories", "browseAvailableStories", "logOut", "home"]
         } else {
             return ["createLearningStory", "reviewLearningStory", "logOut", "home"]
         }
