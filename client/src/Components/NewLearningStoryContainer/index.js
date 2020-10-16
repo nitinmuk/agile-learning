@@ -36,8 +36,8 @@ const NewLearningStoryContainer = () => {
             await API.createLearningStory(learningStory);
             setTimeout(() => setLearningStoryStatus("successMessage"), 500);
             setMessage({ message: `${learningStory.title} learning story created successfully`, severity: "success" })
-            // wait for 2 seconds
-            setTimeout(() => setLearningStoryStatus("done"), 2000);
+            // wait for 3 seconds
+            setTimeout(() => setLearningStoryStatus("done"), 3000);
         } catch (error) {
             console.log("Error", error);
             setMessage({ message: "Failed To Create Learning Story. Please try again.", severity: "error" })
