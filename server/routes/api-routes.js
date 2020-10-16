@@ -5,6 +5,7 @@ const passport = require("../utils/passport");
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const path = require("path");
+const { DateTime } = require("luxon");
 require("dotenv").config();
 
 // Using the passport.authenticate middleware with our local strategy.
@@ -201,6 +202,85 @@ router.delete("/api/learningStory/:id", (request, response, next) => {
           await User.findByIdAndUpdate(
             user._id,
             { $pull: { learningStories: request.params.id } },
+            { new: true }
+          );
+          response.status(204).end();
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
+/**
+ * route to fetch available learning stories for current
+ * user to subscribe. it also prepopulates instructor details
+ * in each learning story
+ */
+router.get("/api/availableLearningStories", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log(error);
+      }
+      if (info !== undefined) {
+        console.log(info.message);
+        response.status(401).send("Authentication Failed");
+      } else {
+        try {
+          const learningStories = await LearningStory.find({
+            status: "published",
+            _id: {
+              $nin: user.subscribedStories
+            }
+          }).populate({ path: "instructor" });
+          learningStories.sort((ls1, ls2) => {
+            const val =
+              DateTime.fromISO(ls1.startDate).toMillis() -
+              DateTime.fromISO(ls2.startDate).toMillis();
+            return val;
+          });
+          response.json(learningStories);
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
+/**
+ * route to let user subscribe to given learning story
+ * i.e. update relevant fields in User and learning story
+ * objects.
+ */
+router.put("/api/subscribeLearningStory/:id", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log(error);
+      }
+      if (info !== undefined) {
+        console.log(info.message);
+        response.status(401).send("Authentication Failed");
+      } else {
+        try {
+          const ls = await LearningStory.findByIdAndUpdate(
+            request.params.id,
+            { $push: { subscribers: user._id } },
+            { new: true }
+          );
+          console.log(ls);
+          await User.findByIdAndUpdate(
+            user._id,
+            { $push: { subscribedStories: request.params.id } },
             { new: true }
           );
           response.status(204).end();
