@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-export function Navigation({ relevantLinks, restoreState }) {
+export function Navigation({ relevantLinks }) {
     const prepareLinks = () => {
         if (relevantLinks) {
             return relevantLinks.map(link => 
@@ -40,7 +40,7 @@ export function Navigation({ relevantLinks, restoreState }) {
             case "reviewLearningStory":
                 return "/reviewLearningStory";
             default:
-                return linkName;
+                return `/${linkName}`;
         }
     }
     return (
