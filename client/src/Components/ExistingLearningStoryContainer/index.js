@@ -38,8 +38,8 @@ const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
                 await API.updateLearningStory(learningStoryToEdit._id, learningStory);
                 setTimeout(() => setLearningStoryStatus("successMessage"), 500);
                 setMessage({ message: `${learningStory.title} learning story ${learningStoryToEdit ? "updated" : "created"} successfully`, severity: "success" })
-                // wait for 2 seconds
-                setTimeout(() => setLearningStoryStatus("done"), 2000);
+                // wait for 3 seconds
+                setTimeout(() => setLearningStoryStatus("done"), 3000);
             }
             else {
                 console.log("Error", "learning story id not found");
