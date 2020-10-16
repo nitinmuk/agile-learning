@@ -53,7 +53,6 @@ const LearningStory = (props) => {
      */
     function initLearningStory() {
         if(props.learningStoryToEdit && props.titleRef.current) {
-            console.log(props.learningStoryToEdit);
             props.titleRef.current.value = props.learningStoryToEdit.title;
             props.storyContentRef.current.value = props.learningStoryToEdit.content;
             props.sessionCountRef.current.value = props.learningStoryToEdit.sessionCount;

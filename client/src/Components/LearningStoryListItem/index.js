@@ -86,7 +86,7 @@ const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteS
                 <Divider />
                 <AccordionActions>
                     <Button size="small" variant="contained" color="primary" onClick={() => handleEditStory(ls)}>
-                        <Link to="/learningStory" style={{color:"white"}}>EDIT</Link>
+                        <Link to="/editLearningStory" style={{color:"white"}}>EDIT</Link>
                     </Button>
                     <Button size="small" variant="contained" color="secondary" onClick={() => handleDeleteStory(ls._id)}>
                         DELETE

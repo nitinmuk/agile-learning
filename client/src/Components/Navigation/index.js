@@ -4,7 +4,7 @@ export function Navigation({ relevantLinks, restoreState }) {
     const prepareLinks = () => {
         if (relevantLinks) {
             return relevantLinks.map(link => 
-            <li key={link} style={{ margin: "0 1em" }}><Link to={getLink(link)} onClick={restoreState}>{getCaption(link)}</Link></li>);
+            <li key={link} style={{ margin: "0 1em" }}><Link to={getLink(link)}>{getCaption(link)}</Link></li>);
         }
     }
     const getCaption = (linkName) => {
@@ -30,7 +30,7 @@ export function Navigation({ relevantLinks, restoreState }) {
             case "home":
                 return "/";
             case "createLearningStory":
-                return "/learningStory";
+                return "/createLearningStory";
             case "signUp":
                 return "/signup";
             case "logIn":
@@ -38,7 +38,7 @@ export function Navigation({ relevantLinks, restoreState }) {
             case "logOut":
                 return "/logout";
             case "reviewLearningStory":
-                return "/review-learning-stories";
+                return "/reviewLearningStory";
             default:
                 return linkName;
         }
