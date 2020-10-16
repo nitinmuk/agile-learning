@@ -5,7 +5,7 @@ const Footer = () => {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
         {'Copyright © '}
-        <Link color="inherit" href="https://github.com/nitinmuk">
+        <Link color="inherit" href="https://github.com/nitinmuk" target="_blank" rel="noopener noreferrer">
           Nitin Mukesh
         </Link>{' '}
         {new Date().getFullYear()}
