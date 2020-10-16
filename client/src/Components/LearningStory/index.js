@@ -46,13 +46,13 @@ const LearningStory = (props) => {
     const classes = useStyles();
     useEffect(() => {
         initLearningStory()
-    },[]);
-    
+    }, []);
+
     /**
      * intialize various form fields with learning story sent as prop
      */
     function initLearningStory() {
-        if(props.learningStoryToEdit && props.titleRef.current) {
+        if (props.learningStoryToEdit && props.titleRef.current) {
             props.titleRef.current.value = props.learningStoryToEdit.title;
             props.storyContentRef.current.value = props.learningStoryToEdit.content;
             props.sessionCountRef.current.value = props.learningStoryToEdit.sessionCount;
@@ -62,7 +62,7 @@ const LearningStory = (props) => {
             props.storyStatusRef.current.value = props.learningStoryToEdit.status;
             props.storyNoteRef.current.value = props.learningStoryToEdit.notes;
             props.urlRef.current.value = props.learningStoryToEdit.sessionLink;
-        }        
+        }
     }
     switch (props.learningStoryStatus) {
         case "done":
@@ -78,7 +78,7 @@ const LearningStory = (props) => {
         case "successMessage":
             return (
                 <Container component="main" maxWidth="md">
-                <MessageAlert {...props.message}/>
+                    <MessageAlert {...props.message} />
                 </Container>
             )
         case "init":
@@ -129,6 +129,8 @@ const LearningStory = (props) => {
                                             required
                                             defaultValue="Computer Science"
                                             inputRef={props.subjectRef}
+                                            renderValue={() => props.subjectRef.current.value}
+                                            onChange={event => props.subjectRef.current.value = event.target.value}
                                         >
                                             <MenuItem value={"Chemistry"}>Chemistry</MenuItem>
                                             <MenuItem value={"Computer Science"}>Computer Science</MenuItem>
@@ -179,6 +181,14 @@ const LearningStory = (props) => {
                                             id="storyStatus"
                                             defaultValue="draft"
                                             inputRef={props.storyStatusRef}
+                                            renderValue={() => {
+                                                switch (props.storyStatusRef.current.value) {
+                                                    case "draft": return "Draft";
+                                                    case "published": return "Publish";
+                                                    case "cancelled": return "Cancel";
+                                                }
+                                            }}
+                                            onChange={event => props.storyStatusRef.current.value = event.target.value}
                                         >
                                             <MenuItem value={"draft"}>Draft</MenuItem>
                                             <MenuItem value={"published"}>Publish</MenuItem>
