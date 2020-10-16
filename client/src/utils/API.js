@@ -6,19 +6,19 @@ export default {
             headers: {'Authorization': `Bearer ${isAuthenticated()}`}
         });
     },
-    signUpUser: function (user) {
+    signUpUser: function(user) {
         return axios.post("/api/signup", user);
     },
-    login: function (userDetails) {
+    login: function(userDetails) {
         return axios.post("/api/login", userDetails);
     },
-    getUser: function () {
+    getUser: function() {
         return this.getAxios().get("/api/user");
     },
-    createLearningStory: function (learningStory) {
+    createLearningStory: function(learningStory) {
         return this.getAxios().post("/api/learningStory", learningStory);
     },
-    getLearningStories: function () {
+    getLearningStories: function() {
         return this.getAxios().get("/api/learningStories");
     },
     updateLearningStory: function(id, learningStory) {
@@ -26,5 +26,14 @@ export default {
     },
     deleteLearningStory: function(id) {
         return this.getAxios().delete(`/api/learningStory/${id}`);
+    },
+    getAvailableLearningStories: function() {
+        return this.getAxios().get("/api/availableLearningStories")
+    },
+    subscribeLearningStory: function(id) {
+        return this.getAxios().put(`/api/subscribeLearningStory/${id}`);
+    },
+    unSubscribeLearningStory: function(id) {
+        return this.getAxios().put(`/api/unsubscribeLearningStory/${id}`);
     }
 }
