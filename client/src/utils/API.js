@@ -30,6 +30,9 @@ export default {
     getAvailableLearningStories: function() {
         return this.getAxios().get("/api/availableLearningStories")
     },
+    getSubscribedLearningStories: function() {
+        return this.getAxios().get("/api/subscribedLearningStories");
+    },
     subscribeLearningStory: function(id) {
         return this.getAxios().put(`/api/subscribeLearningStory/${id}`);
     },
