@@ -29,16 +29,12 @@ export function Navigation({ relevantLinks }) {
         switch (linkName) {
             case "home":
                 return "/";
-            case "createLearningStory":
-                return "/createLearningStory";
             case "signUp":
                 return "/signup";
             case "logIn":
                 return "/login";
             case "logOut":
                 return "/logout";
-            case "reviewLearningStory":
-                return "/reviewLearningStory";
             default:
                 return `/${linkName}`;
         }
