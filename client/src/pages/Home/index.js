@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Navigation from "../../Components/Navigation";
 import { Route, Switch } from "react-router-dom";
-import NewLearningStoryContainer from "../../Components/NewLearningStoryContainer";
-import ExistingLearningStoryContainer from "../../Components/ExistingLearningStoryContainer";
+import NewLearningStoryContainer from "../NewLearningStoryContainer";
+import ExistingLearningStoryContainer from "../ExistingLearningStoryContainer";
 import Logout from "../../Components/Logout";
 import LearningStoriesContainer from "../LearningStoriesContainer";
 import AvailableLearningStoryContainer from "../AvailableLearningStoryContainer";
 import SubscribedLearningStoryContainer from "../SubscribedLearningStoryContainer";
 import ViewLearningStoryContainer from "../ViewLearningStoryContainer";
+import Footer from "../../Components/Footer";
+import Box from '@material-ui/core/Box';
 
 const Home = (homeProps) => {
     const [learningStoryToEdit, setLearningStoryToEdit] = useState();
@@ -62,7 +64,7 @@ const Home = (homeProps) => {
                     path="/viewLearningStory"
                     render={(props =>
                         <ViewLearningStoryContainer {...props}
-                        learningStoryToView={learningStoryToView}
+                            learningStoryToView={learningStoryToView}
                         />)}
                 />
                 <Route
@@ -73,6 +75,9 @@ const Home = (homeProps) => {
                         />)}
                 />
             </Switch>
+            <Box mt={5}>
+                <Footer />
+            </Box>
         </React.Fragment>
     );
 

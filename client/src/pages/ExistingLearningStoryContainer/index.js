@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import API from '../../utils/API';
-import LearningStory from '../LearningStory';
-const NewLearningStoryContainer = () => {
+import LearningStory from '../../Components/LearningStory';
+const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
     const titleRef = useRef("");
     const sessionCountRef = useRef("");
     const subjectRef = useRef("");
@@ -12,9 +12,10 @@ const NewLearningStoryContainer = () => {
     const storyNoteRef = useRef("");
     const urlRef = useRef("");
     const [learningStoryStatus, setLearningStoryStatus] = useState("init");
-    const [message, setMessage] = useState();    
+    const [message, setMessage] = useState();
+
     /**
-     * a handler to handle learning story creation and update.
+     * a handler to handle learning story update.
      * @param {learning story submit} event 
      */
     const handleLearningStory = async event => {
@@ -32,12 +33,19 @@ const NewLearningStoryContainer = () => {
             sessionLink: urlRef.current.value
         }
         try {
-            setLearningStoryStatus("processing");            
-            await API.createLearningStory(learningStory);
-            setTimeout(() => setLearningStoryStatus("successMessage"), 500);
-            setMessage({ message: `${learningStory.title} learning story created successfully`, severity: "success" })
-            // wait for 3 seconds
-            setTimeout(() => setLearningStoryStatus("done"), 3000);
+            setLearningStoryStatus("processing");
+            if (learningStoryToEdit) {
+                await API.updateLearningStory(learningStoryToEdit._id, learningStory);
+                setTimeout(() => setLearningStoryStatus("successMessage"), 500);
+                setMessage({ message: `${learningStory.title} learning story ${learningStoryToEdit ? "updated" : "created"} successfully`, severity: "success" })
+                // wait for 3 seconds
+                setTimeout(() => setLearningStoryStatus("done"), 3000);
+            }
+            else {
+                console.log("Error", "learning story id not found");
+                setMessage({message: "Somethig went wrong. Please try again", severity: "error"});
+
+            }
         } catch (error) {
             console.log("Error", error);
             setMessage({ message: "Failed To Create Learning Story. Please try again.", severity: "error" })
@@ -58,8 +66,9 @@ const NewLearningStoryContainer = () => {
             handleLearningStory={handleLearningStory}
             learningStoryStatus={learningStoryStatus}
             message={message}
+            learningStoryToEdit={learningStoryToEdit}
         />
     );
 }
 
-export default NewLearningStoryContainer;
+export default ExistingLearningStoryContainer;
