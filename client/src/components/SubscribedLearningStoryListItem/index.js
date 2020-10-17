@@ -79,6 +79,13 @@ const SubscribedLearningStoryListItem = ({ subscribedLearningStories, handleView
                            </a>
                         </Typography>
                     </div>
+                    <div className={classes.column}>
+                        <Typography className={classes.secondaryHeading}>
+                            <a className={classes.secondaryHeading} href={ls.sessionLink} target="_blank" rel="noopener noreferrer">
+                                Click Here To Join
+                           </a>
+                        </Typography>
+                    </div>
                 </AccordionSummary>
                 <AccordionDetails className={classes.details}>
                     <div>
