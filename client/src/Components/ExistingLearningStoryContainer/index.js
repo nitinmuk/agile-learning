@@ -15,7 +15,7 @@ const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
     const [message, setMessage] = useState();
 
     /**
-     * a handler to handle learning story creation and update.
+     * a handler to handle learning story update.
      * @param {learning story submit} event 
      */
     const handleLearningStory = async event => {

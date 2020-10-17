@@ -7,9 +7,11 @@ import Logout from "../../Components/Logout";
 import LearningStoriesContainer from "../LearningStoriesContainer";
 import AvailableLearningStoryContainer from "../AvailableLearningStoryContainer";
 import SubscribedLearningStoryContainer from "../SubscribedLearningStoryContainer";
+import ViewLearningStoryContainer from "../ViewLearningStoryContainer";
 
 const Home = (homeProps) => {
     const [learningStoryToEdit, setLearningStoryToEdit] = useState();
+    const [learningStoryToView, setLearningStoryToView] = useState();
     /**
      * once user clicks edit, this function will prepopulate data as
      * fetched from database.
@@ -19,7 +21,7 @@ const Home = (homeProps) => {
         setLearningStoryToEdit(learningStory);
     }
     const handleViewStory = learningStory => {
-        setLearningStoryToEdit(learningStory);
+        setLearningStoryToView(learningStory);
     }
     return (
         <React.Fragment>
@@ -54,6 +56,13 @@ const Home = (homeProps) => {
                     render={(props =>
                         <SubscribedLearningStoryContainer {...props}
                             handleViewStory={handleViewStory}
+                        />)}
+                />
+                <Route
+                    path="/viewLearningStory"
+                    render={(props =>
+                        <ViewLearningStoryContainer {...props}
+                        learningStoryToView={learningStoryToView}
                         />)}
                 />
                 <Route
