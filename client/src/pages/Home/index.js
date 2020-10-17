@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Navigation from "../../Components/Navigation";
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch } from "react-router-dom";
 import NewLearningStoryContainer from "../../Components/NewLearningStoryContainer";
 import ExistingLearningStoryContainer from "../../Components/ExistingLearningStoryContainer";
 import Logout from "../../Components/Logout";
-import LearningStoriesContainer from '../LearningStoriesContainer';
-import AvailableLearningStoryContainer from '../AvailableLearningStoryContainer';
+import LearningStoriesContainer from "../LearningStoriesContainer";
+import AvailableLearningStoryContainer from "../AvailableLearningStoryContainer";
+import SubscribedLearningStoryContainer from "../SubscribedLearningStoryContainer";
 
 const Home = (homeProps) => {
     const [learningStoryToEdit, setLearningStoryToEdit] = useState();
@@ -42,9 +43,16 @@ const Home = (homeProps) => {
                         />)}
                 />
                 <Route
-                    path="/browseAvailableStories"
+                    path="/availableStories"
                     render={(props =>
                         <AvailableLearningStoryContainer {...props}
+                            handleViewStory={handleViewStory}
+                        />)}
+                />
+                <Route
+                    path="/subscribedStories"
+                    render={(props =>
+                        <SubscribedLearningStoryContainer {...props}
                             handleViewStory={handleViewStory}
                         />)}
                 />
@@ -61,7 +69,7 @@ const Home = (homeProps) => {
 
     function getRelevantLinks() {
         if (homeProps.studentUser) {
-            return ["subscribedStories", "browseAvailableStories", "logOut", "home"]
+            return ["subscribedStories", "availableStories", "logOut", "home"]
         } else {
             return ["createLearningStory", "reviewLearningStory", "logOut", "home"]
         }
