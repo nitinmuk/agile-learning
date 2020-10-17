@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navigation from "../../components/Navigation";
+import Header from "../../components/Header";
 import { Route, Switch } from "react-router-dom";
 import NewLearningStoryContainer from "../NewLearningStoryContainer";
 import ExistingLearningStoryContainer from "../ExistingLearningStoryContainer";
@@ -27,7 +27,7 @@ const Home = (homeProps) => {
     }
     return (
         <React.Fragment>
-            <Navigation relevantLinks={getRelevantLinks()} />
+            <Header relevantLinks={getRelevantLinks()} />
             <Switch>
                 <Route path="/createLearningStory">
                     <NewLearningStoryContainer />
@@ -83,9 +83,9 @@ const Home = (homeProps) => {
 
     function getRelevantLinks() {
         if (homeProps.studentUser) {
-            return ["subscribedStories", "availableStories", "logOut", "home"]
+            return ["home", "subscribedStories", "availableStories", "logOut"]
         } else {
-            return ["createLearningStory", "reviewLearningStory", "logOut", "home"]
+            return ["home", "createLearningStory", "reviewLearningStory", "logOut"]
         }
     }
 }
