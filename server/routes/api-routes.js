@@ -355,7 +355,6 @@ router.put("/api/unsubscribeLearningStory/:id", (request, response, next) => {
             { $pull: { subscribers: user._id } },
             { new: true }
           );
-          console.log(ls);
           await User.findByIdAndUpdate(
             user._id,
             { $pull: { subscribedStories: request.params.id } },
