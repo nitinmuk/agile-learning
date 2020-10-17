@@ -74,7 +74,7 @@ const AvailableLearningStoryListItem = ({ availableLearningStories, handleViewSt
                     </div>
                     <div className={classes.column}>
                         <Typography className={classes.secondaryHeading}>
-                            <a className={classes.secondaryHeading} href="#" target="_blank" rel="noopener noreferrer">
+                            <a className={classes.secondaryHeading} href={ls.instructor.profileLink} target="_blank" rel="noopener noreferrer">
                                 View Instructor's Profile
                            </a>
                         </Typography>

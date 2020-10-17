@@ -31,7 +31,7 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false
   },
-  userProfileLink: {
+  profileLink: {
     type: String
   },
   // a student user will have list of stories subscribed by the user

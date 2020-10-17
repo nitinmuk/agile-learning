@@ -17,6 +17,7 @@ const App = () => {
   const lNameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
+  const profileLinkRef = useRef("");
   /**
    * calls getUser API to initialize studentUser
    */
@@ -51,7 +52,8 @@ const App = () => {
       email: emailRef.current.value.trim(),
       password: passwordRef.current.value,
       student: studentUser,
-      instructor: !studentUser
+      instructor: !studentUser,
+      profileLink: profileLinkRef.current.value
     }
     try {
       const response = await API.signUpUser(user);
@@ -118,7 +120,7 @@ const App = () => {
               studentUser={studentUser}
               handleSignUp={handleSignUp}
               handleStudentUser={handleStudentUser}
-              fNameRef={fNameRef} lNameRef={lNameRef} emailRef={emailRef} passwordRef={passwordRef} />)}
+              fNameRef={fNameRef} lNameRef={lNameRef} emailRef={emailRef} passwordRef={passwordRef} profileLinkRef={profileLinkRef} />)}
         />
         <Route path="/login"
           render={(props =>

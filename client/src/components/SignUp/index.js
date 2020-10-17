@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Footer from "../Footer";
 import { Redirect } from "react-router-dom";
+import { Collapse } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,7 +46,7 @@ const SignUp = (props) => {
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
-        </Typography>
+          </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -104,6 +105,20 @@ const SignUp = (props) => {
                   label="Sign up as Student"
                   control={<Switch size="small" checked={props.studentUser} onChange={props.handleStudentUser} />}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <Collapse in={!props.studentUser} timeout="auto" unmountOnExit>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="profile Link"
+                    label="profile Link"
+                    type="url"
+                    id="profileLink"
+                    inputRef={props.profileLinkRef}
+                  />
+                </Collapse>
               </Grid>
             </Grid>
             <Button
