@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import MessageAlert from "../../Components/MessageAlert";
-import LearningStoryListItem from "../../Components/LearningStoryListItem";
+import MessageAlert from "../../components/MessageAlert";
+import LearningStoryListItem from "../../components/LearningStoryListItem";
 import { Container } from "@material-ui/core";
-import CircularIndeterminate from "../../Components/CircularIndeterminate";
+import CircularIndeterminate from "../../components/CircularIndeterminate";
 import API from "../../utils/API";
 
 const LearningStoriesContainer = ({ handleEditStory }) => {

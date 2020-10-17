@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import MessageAlert from "../../Components/MessageAlert";
+import MessageAlert from "../../components/MessageAlert";
 import { Container } from "@material-ui/core";
-import CircularIndeterminate from "../../Components/CircularIndeterminate";
+import CircularIndeterminate from "../../components/CircularIndeterminate";
 import API from "../../utils/API";
-import SubscribedLearningStoryListItem from "../../Components/SubscribedLearningStoryListItem";
+import SubscribedLearningStoryListItem from "../../components/SubscribedLearningStoryListItem";
 
 const SubscribedLearningStoryContainer = ({ handleViewStory }) => {
     const [subscribedLearningStories, setSubscribedLearningStories] = useState();

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import "./App.css";
-import SignUp from "./Components/SignUp";
+import SignUp from "./components/SignUp";
 import Home from "./pages/Home";
-import Login from "./Components/Login";
-import PrivateRoute from "./Components/PrivateRoute";
+import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
 import CssBaseLine from "@material-ui/core/CssBaseline";
 import isAuthenticated from "./utils/isAuthenticated";
 import API from "./utils/API";

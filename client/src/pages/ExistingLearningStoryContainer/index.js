@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import API from '../../utils/API';
-import LearningStory from '../../Components/LearningStory';
+import LearningStory from '../../components/LearningStory';
 const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
     const titleRef = useRef("");
     const sessionCountRef = useRef("");

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import Navigation from "../../Components/Navigation";
+import Navigation from "../../components/Navigation";
 import { Route, Switch } from "react-router-dom";
 import NewLearningStoryContainer from "../NewLearningStoryContainer";
 import ExistingLearningStoryContainer from "../ExistingLearningStoryContainer";
-import Logout from "../../Components/Logout";
+import Logout from "../../components/Logout";
 import LearningStoriesContainer from "../LearningStoriesContainer";
 import AvailableLearningStoryContainer from "../AvailableLearningStoryContainer";
 import SubscribedLearningStoryContainer from "../SubscribedLearningStoryContainer";
 import ViewLearningStoryContainer from "../ViewLearningStoryContainer";
-import Footer from "../../Components/Footer";
+import Footer from "../../components/Footer";
 import Box from '@material-ui/core/Box';
 
 const Home = (homeProps) => {
