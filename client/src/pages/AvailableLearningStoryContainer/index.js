@@ -31,7 +31,7 @@ const AvailableLearningStoryContainer = ({ handleViewStory }) => {
      * calls API to subscribe learning story and also update 
      * available learningStories state
      * accordingly i.e. filter out subscribed learning story
-     * @param {id of learning story to delete} id 
+     * @param {id of learning story to subscribe} id 
      */
     const handleSubscribeStory = async id => {
         try {
