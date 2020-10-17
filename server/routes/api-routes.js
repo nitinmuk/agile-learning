@@ -255,6 +255,45 @@ router.get("/api/availableLearningStories", (request, response, next) => {
 });
 
 /**
+ * route to fetch all learning stories subscribed by current
+ * user. it also prepopulates instructor details
+ * in each learning story
+ */
+router.get("/api/subscribedLearningStories", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log("Error: ", error);
+        if (info !== undefined) {
+          console.log("Message: ", info.message);
+        }
+        response.status(401).send("Authentication Failed");
+      } else {
+        try {
+          const learningStories = await LearningStory.find({
+            _id: {
+              $in: user.subscribedStories
+            }
+          }).populate({ path: "instructor" });
+          learningStories.sort((ls1, ls2) => {
+            const val =
+              DateTime.fromISO(ls1.startDate).toMillis() -
+              DateTime.fromISO(ls2.startDate).toMillis();
+            return val;
+          });
+          response.json(learningStories);
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
+/**
  * route to let user subscribe to given learning story
  * i.e. update relevant fields in User and learning story
  * objects.
@@ -281,6 +320,45 @@ router.put("/api/subscribeLearningStory/:id", (request, response, next) => {
           await User.findByIdAndUpdate(
             user._id,
             { $push: { subscribedStories: request.params.id } },
+            { new: true }
+          );
+          response.status(204).end();
+        } catch (error) {
+          console.log("Error", error);
+          response.status(500).end();
+        }
+      }
+    }
+  )(request, response, next);
+});
+
+/**
+ * route to let user unsubscribe from a given learning story
+ * i.e. update relevant fields in User and learning story
+ * objects.
+ */
+router.put("/api/unsubscribeLearningStory/:id", (request, response, next) => {
+  passport.authenticate(
+    "jwt",
+    { session: false },
+    async (error, user, info) => {
+      if (error) {
+        console.log(error);
+        if (info !== undefined) {
+          console.log(info.message);
+        }
+        response.status(401).send("Authentication Failed");
+      } else {
+        try {
+          const ls = await LearningStory.findByIdAndUpdate(
+            request.params.id,
+            { $pull: { subscribers: user._id } },
+            { new: true }
+          );
+          console.log(ls);
+          await User.findByIdAndUpdate(
+            user._id,
+            { $pull: { subscribedStories: request.params.id } },
             { new: true }
           );
           response.status(204).end();
