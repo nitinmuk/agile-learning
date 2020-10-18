@@ -375,7 +375,7 @@ router.put("/api/unsubscribeLearningStory/:id", (request, response, next) => {
 // Send every request to the React app
 // Define any API routes before this runs
 router.get("*", (request, response) => {
-  response.sendFile(path.join(__dirname, "./client/build/index.html"));
+  response.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 module.exports = router;
