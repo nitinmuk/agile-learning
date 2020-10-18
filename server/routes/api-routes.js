@@ -44,11 +44,14 @@ router.post("/api/signup", async ({ body }, response) => {
 router.get(
   "/api/user",
   passport.authenticate("jwt", { session: false }),
-  (request, response) => {
+  async (request, response) => {
     if (!request.user) {
       response.json({});
     } else {
-      response.json(request.user);
+      const populatedUser = await User.findById(request.user._id).populate({
+        path: "learningStories"
+      });
+      response.json(populatedUser);
     }
   }
 );
@@ -350,7 +353,7 @@ router.put("/api/unsubscribeLearningStory/:id", (request, response, next) => {
         response.status(401).send("Authentication Failed");
       } else {
         try {
-          const ls = await LearningStory.findByIdAndUpdate(
+          await LearningStory.findByIdAndUpdate(
             request.params.id,
             { $pull: { subscribers: user._id } },
             { new: true }
