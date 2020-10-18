@@ -62,7 +62,7 @@ const App = () => {
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);
-        setStudentUser(response.data.student);
+        setStudentUser(response.data.student);       
       }
     } catch (error) {
       console.log("Error", error);

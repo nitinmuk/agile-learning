@@ -34,7 +34,7 @@ const initChartData = {
     ]
 };
 
-const StudentCountBarChart = () => {
+const LearningStoryStudentCountBarChart = () => {
     const [chartData, setChartData] = useState(initChartData);
     const [chartStatus, setChartStatus] = useState("init");
     const [message, setMessage] = useState();
@@ -75,8 +75,8 @@ const StudentCountBarChart = () => {
         setChartStatus("processing");
         API.getUser()
             .then(response => {
-                initChartData.labels = getStoryTitles(response.data.learningStories);
-                initChartData.datasets[0].data = getStudentCounts(response.data.learningStories);
+                initChartData.labels = getStoryTitles(response.data.subscribedStories);
+                initChartData.datasets[0].data = getStudentCounts(response.data.subscribedStories);
                 setChartData(initChartData);
                 setChartStatus("init");
             })
@@ -107,8 +107,8 @@ const StudentCountBarChart = () => {
 
         default:
             return (
-                <Container maxwidth="sm">
-                    <Typography variant = "h6" style={{ textAlign: "center"}}>Students Count Per Learning Story</Typography>
+                <Container>
+                    <Typography style={{ textAlign: "center" }}>Students Count Per Learning Story</Typography>
                     <Bar
                         data={chartData}
                         width={100}
@@ -122,4 +122,4 @@ const StudentCountBarChart = () => {
     }
 };
 
-export default StudentCountBarChart;
+export default LearningStoryStudentCountBarChart;

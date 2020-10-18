@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     },
 });
 
-const AvailableLearningStoryContainer = ({ handleViewStory }) => {
+const AvailableLearningStoryContainer = ({ handleViewStory, latestOnly }) => {
     const classes = useStyles();
     const [availableLearningStories, setAvailableLearningStories] = useState();
     const [containerStatus, setContainerStatus] = useState("init");
@@ -91,9 +91,10 @@ const AvailableLearningStoryContainer = ({ handleViewStory }) => {
         return (
             <Container className={classes.root}>
                 <AvailableLearningStoryListItem
-                    availableLearningStories={availableLearningStories}
+                    availableLearningStories={latestOnly ? availableLearningStories.slice(0,1):availableLearningStories}
                     handleViewStory={handleViewStory}
                     handleSubscribeStory={handleSubscribeStory}
+                    reduceText={latestOnly ? true : false}
                 />
             </Container>
         );

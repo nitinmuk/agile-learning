@@ -6,22 +6,26 @@ import MessageAlert from "../MessageAlert";
 import CircularIndeterminate from "../CircularIndeterminate";
 
 const initChartdata = {
-	labels: [
-		'Draft',
-		'Published',
-		'Cancelled'
-	],
+	labels: [],
 	datasets: [{
-		data: [0, 0, 0],
+		data: [],
 		backgroundColor: [
 			'#FF6384',
 			'#36A2EB',
-			'#FFCE56'
+			'#FFCE56',    
+			"#a05195",
+			"#d45087",
+			"#f95d6a",
+			"#ff7c43",
 		],
 		hoverBackgroundColor: [
 			'#FF6384',
 			'#36A2EB',
-			'#FFCE56'
+			'#FFCE56',    
+			"#a05195",
+			"#d45087",
+			"#f95d6a",
+			"#ff7c43",
 		]
 	}]
 };
@@ -30,38 +34,39 @@ const LearningStoryStatusPieChart = () => {
 	const [chartData, setChartData] = useState(initChartdata);
 	const [chartStatus, setChartStatus] = useState("init");
 	const [message, setMessage] = useState();
-	const getStoryStatusData = learningStories => {
+	const getStorySubjectData = (learningStories, uniqueSubjects) => {
 		const chartData = [];
-		let draftCount = 0, publishedCount = 0, cancelledCount = 0;
 		if (learningStories && learningStories.length) {
-			learningStories.forEach(ls => {
-				switch (ls.status) {
-					case "draft":
-						draftCount++;
-						break;
-					case "published":
-						publishedCount++;
-						break
-					case "cancelled":
-						cancelledCount++;
-						break;
-					default:
-						console.log(`Error: Invalid status ${ls.status}`);
-				}
-
-			});
-			chartData.push(draftCount ? draftCount : 0);
-			chartData.push(publishedCount ? publishedCount : 0);
-			chartData.push(cancelledCount ? cancelledCount : 0);
+			for (let i = 0; i < uniqueSubjects.length; i++) {
+				chartData[i] = 0;
+				learningStories.forEach(ls => {
+					if (ls.subject === uniqueSubjects[i]) {
+						chartData[i]++;
+					}
+				});
+			}
 		}
 		return chartData;
+	}
+	const getUniqueSubjects = learningStories => {
+		const uniqueSubjects = [];
+		console.log(learningStories);
+		if (learningStories && learningStories.length) {
+			learningStories.forEach(ls => {
+				if (!uniqueSubjects.includes(ls.subject)) {
+					uniqueSubjects.push(ls.subject);
+				}
+			});
+		}
+		return uniqueSubjects;
 	}
 	useEffect(() => {
 		setChartStatus("processing");
 		API.getUser()
 			.then(response => {
-				console.log(response.data);
-				initChartdata.datasets[0].data = getStoryStatusData(response.data.learningStories);
+				initChartdata.labels = getUniqueSubjects(response.data.subscribedStories);
+				initChartdata.datasets[0].data = getStorySubjectData(
+					response.data.subscribedStories, initChartdata.labels);
 				setChartData(initChartdata);
 				setChartStatus("init");
 			})
@@ -93,8 +98,8 @@ const LearningStoryStatusPieChart = () => {
 		default:
 			return (
 				<Container>
-					<Typography variant="h6" style={{ textAlign: "center" }}>Learning Story Status Distribution</Typography>
-					<Pie data={chartData} />					
+					<Typography variant="h6" style={{ textAlign: "center" }}>Subscribed Courses Subject Distribution</Typography>
+					<Pie data={chartData} />	
 				</Container>
 			);
 	}

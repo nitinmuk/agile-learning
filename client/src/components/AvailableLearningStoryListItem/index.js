@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import { Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import utility from "../../utils/utility";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AvailableLearningStoryListItem = ({ availableLearningStories, handleViewStory, handleSubscribeStory }) => {
+const AvailableLearningStoryListItem = ({ availableLearningStories, 
+    handleViewStory, handleSubscribeStory, reduceText }) => {
     const classes = useStyles();
 
     return (
@@ -67,7 +69,7 @@ const AvailableLearningStoryListItem = ({ availableLearningStories, handleViewSt
                         <Typography className={classes.heading}>{ls.subject}</Typography>
                     </div>
                     <div className={classes.column}>
-                        <Typography className={classes.secondaryHeading}>{ls.title}</Typography>
+                        <Typography className={classes.secondaryHeading}>{reduceText ? utility.getBriefTitle(ls.title) : ls.title}</Typography>
                     </div>
                     <div className={classes.column}>
                         <Typography className={classes.secondaryHeading}>{`${ls.startDate} ${ls.startTime}`}</Typography>
@@ -75,7 +77,7 @@ const AvailableLearningStoryListItem = ({ availableLearningStories, handleViewSt
                     <div className={classes.column}>
                         <Typography className={classes.secondaryHeading}>
                             <a className={classes.secondaryHeading} href={ls.instructor.profileLink} target="_blank" rel="noopener noreferrer">
-                                View Instructor's Profile
+                            {reduceText ? "View Ins..." : "View Instructor's Profile"}
                            </a>
                         </Typography>
                     </div>
@@ -83,7 +85,7 @@ const AvailableLearningStoryListItem = ({ availableLearningStories, handleViewSt
                 <AccordionDetails className={classes.details}>
                     <div>
                         <Typography variant="caption">
-                            {`Course Details: ${ls.content}`}
+                            {reduceText ? utility.getBriefContent(ls.content) : ls.content}
                         </Typography>
                     </div>
                 </AccordionDetails>

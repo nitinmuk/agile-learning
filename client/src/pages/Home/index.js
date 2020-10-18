@@ -7,7 +7,7 @@ import LearningStoriesContainer from "../LearningStoriesContainer";
 import AvailableLearningStoryContainer from "../AvailableLearningStoryContainer";
 import SubscribedLearningStoryContainer from "../SubscribedLearningStoryContainer";
 import ViewLearningStoryContainer from "../ViewLearningStoryContainer";
-import InstructorHome from "../InstructorHome";
+import HomeContainer from "../../components/HomeContainer";
 
 
 const Home = (homeProps) => {
@@ -75,8 +75,9 @@ const Home = (homeProps) => {
                 <Route
                     path="/"
                     render={(props =>
-                        <InstructorHome {...props}
+                        <HomeContainer {...props}
                             handleEditStory={handleEditStory}
+                            handleViewStory={handleViewStory}
                         />)}
                 />
             </Switch>

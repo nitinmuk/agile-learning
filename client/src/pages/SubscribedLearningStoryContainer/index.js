@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     },
 });
 
-const SubscribedLearningStoryContainer = ({ handleViewStory }) => {
+const SubscribedLearningStoryContainer = ({ handleViewStory, latestOnly }) => {
     const classes = useStyles();
     const [subscribedLearningStories, setSubscribedLearningStories] = useState();
     const [containerStatus, setContainerStatus] = useState("init");
@@ -91,9 +91,11 @@ const SubscribedLearningStoryContainer = ({ handleViewStory }) => {
         return (
             <Container className={classes.root}>            
             <SubscribedLearningStoryListItem
-                subscribedLearningStories={subscribedLearningStories}
+                subscribedLearningStories={latestOnly ? subscribedLearningStories.slice(0,1) : subscribedLearningStories}
                 handleViewStory={handleViewStory}
-                handleUnsubscribeStory={handleUnsubscribeStory} />
+                handleUnsubscribeStory={handleUnsubscribeStory} 
+                reduceText={latestOnly ? true : false}
+                />
             </Container>
         );
     }
