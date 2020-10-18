@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Header from "./components/Header";
 import "./App.css";
 import SignUp from "./components/SignUp";
 import Home from "./pages/Home";
@@ -8,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CssBaseLine from "@material-ui/core/CssBaseline";
 import isAuthenticated from "./utils/isAuthenticated";
 import API from "./utils/API";
+import Footer from './components/Footer';
 
 const App = () => {
   const [studentUser, setStudentUser] = useState(true);
@@ -24,12 +26,12 @@ const App = () => {
   const initStudentUser = async () => {
     try {
       const response = await API.getUser();
-      setStudentUser(response.data.student);      
-    } catch(error) {
+      setStudentUser(response.data.student);
+    } catch (error) {
       console.log(error);
     }
   }
-  if(isLoggedIn) {
+  if (isLoggedIn) {
     initStudentUser();
   }
   /**
@@ -111,6 +113,7 @@ const App = () => {
   return (
     <React.Fragment>
       <CssBaseLine />
+      <Header relevantLinks={getRelevantLinks()} />
       <Switch>
         <Route
           exact path="/signup"
@@ -137,8 +140,22 @@ const App = () => {
           studentUser={studentUser}
         />
       </Switch>
+      <Footer />
     </React.Fragment>
   );
+  function getRelevantLinks() {
+    if (isLoggedIn) {
+      if (studentUser) {
+        return ["home", "subscribedStories", "availableStories", "logOut"];
+      } else {
+        return ["home", "createLearningStory", "reviewLearningStory", "logOut"];
+      }
+    }
+    else {
+      return ["logIn"];
+    }
+
+  }
 }
 
 export default App;

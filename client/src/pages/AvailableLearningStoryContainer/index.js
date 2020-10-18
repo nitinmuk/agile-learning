@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
 import MessageAlert from "../../components/MessageAlert";
+import { makeStyles } from '@material-ui/core/styles';
 import { Container } from "@material-ui/core";
 import CircularIndeterminate from "../../components/CircularIndeterminate";
 import API from "../../utils/API";
 import AvailableLearningStoryListItem from "../../components/AvailableLearningStoryListItem";
 
+const useStyles = makeStyles({
+    root: {
+        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+        border: 0,
+        borderRadius: 3,
+        boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+        color: "white",
+        padding: "30px",
+    },
+});
+
 const AvailableLearningStoryContainer = ({ handleViewStory }) => {
+    const classes = useStyles();
     const [availableLearningStories, setAvailableLearningStories] = useState();
     const [containerStatus, setContainerStatus] = useState("init");
     const [message, setMessage] = useState();
@@ -67,7 +80,7 @@ const AvailableLearningStoryContainer = ({ handleViewStory }) => {
     }
     else if (containerStatus === "displayMessage") {
         return (
-            <Container>
+            <Container component="main" maxWidth="md">
                 <MessageAlert
                     {...message}
                 />
@@ -76,15 +89,18 @@ const AvailableLearningStoryContainer = ({ handleViewStory }) => {
     }
     else if (availableLearningStories && availableLearningStories.length) {
         return (
-            <AvailableLearningStoryListItem
-                availableLearningStories={availableLearningStories}
-                handleViewStory={handleViewStory}
-                handleSubscribeStory={handleSubscribeStory} />
+            <Container className={classes.root}>
+                <AvailableLearningStoryListItem
+                    availableLearningStories={availableLearningStories}
+                    handleViewStory={handleViewStory}
+                    handleSubscribeStory={handleSubscribeStory}
+                />
+            </Container>
         );
     }
     else if (availableLearningStories && availableLearningStories.length === 0) {
         return (
-            <Container>
+            <Container component="main" maxWidth="md">
                 <MessageAlert
                     message="Sorry! There are no more available stories to subscribe. Please check again in few days."
                     severity="info"

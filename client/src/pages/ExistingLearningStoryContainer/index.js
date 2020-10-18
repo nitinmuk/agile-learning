@@ -1,7 +1,22 @@
 import React, { useRef, useState } from 'react';
 import API from '../../utils/API';
 import LearningStory from '../../components/LearningStory';
-const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
+import { makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core';
+import { Redirect } from "react-router-dom";
+
+const useStyles = makeStyles({
+    root: {
+        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+        border: 0,
+        borderRadius: 3,
+        boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+        color: "white",
+        padding: "30px",
+    },
+});
+const ExistingLearningStoryContainer = ({ learningStoryToEdit, location }) => {
+    const classes = useStyles();
     const titleRef = useRef("");
     const sessionCountRef = useRef("");
     const subjectRef = useRef("");
@@ -43,7 +58,7 @@ const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
             }
             else {
                 console.log("Error", "learning story id not found");
-                setMessage({message: "Somethig went wrong. Please try again", severity: "error"});
+                setMessage({ message: "Somethig went wrong. Please try again", severity: "error" });
 
             }
         } catch (error) {
@@ -51,24 +66,32 @@ const ExistingLearningStoryContainer = ({ learningStoryToEdit }) => {
             setMessage({ message: "Failed To Create Learning Story. Please try again.", severity: "error" })
         }
     }
+    if (learningStoryToEdit) {
+        return (
+            <Container className={classes.root}>
+                <LearningStory
+                    titleRef={titleRef}
+                    sessionCountRef={sessionCountRef}
+                    startDateRef={startDateRef}
+                    startTimeRef={startTimeRef}
+                    subjectRef={subjectRef}
+                    storyStatusRef={storyStatusRef}
+                    storyContentRef={storyContentRef}
+                    storyNoteRef={storyNoteRef}
+                    urlRef={urlRef}
+                    handleLearningStory={handleLearningStory}
+                    learningStoryStatus={learningStoryStatus}
+                    message={message}
+                    learningStoryToEdit={learningStoryToEdit}
+                />
+            </Container>
+        );
+    } else {
+        return (
+            (<Redirect to={{pathname: "/reviewLearningStory", state: {from: location}}}/>)
+        );
 
-    return (
-        <LearningStory
-            titleRef={titleRef}
-            sessionCountRef={sessionCountRef}
-            startDateRef={startDateRef}
-            startTimeRef={startTimeRef}
-            subjectRef={subjectRef}
-            storyStatusRef={storyStatusRef}
-            storyContentRef={storyContentRef}
-            storyNoteRef={storyNoteRef}
-            urlRef={urlRef}
-            handleLearningStory={handleLearningStory}
-            learningStoryStatus={learningStoryStatus}
-            message={message}
-            learningStoryToEdit={learningStoryToEdit}
-        />
-    );
+    }
 }
 
 export default ExistingLearningStoryContainer;

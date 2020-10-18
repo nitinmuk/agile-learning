@@ -23,11 +23,13 @@ const useStyles = makeStyles((theme) => ({
             flexGrow: 1,
         }
     },
+    oneTitle: {
+        flexGrow: 1
+    },
     headerOptions: {
         display: "flex",
         flex: 1,
-        justifyContent: "space-evenly"
-
+        justifyContent: "space-evenly",
     }
 }));
 
@@ -112,7 +114,7 @@ const Header = ({ history, relevantLinks }) => {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
+                    <Typography variant="h6" className={relevantLinks.length === 1 ? classes.oneTitle : classes.title}>
                         Agile Learning
                     </Typography>
 
@@ -133,7 +135,7 @@ const Header = ({ history, relevantLinks }) => {
                                 </Menu>
                             </div>) :
                             (
-                                <div className={classes.headerOptions}>
+                                <div className={relevantLinks.length === 1 ? null : classes.headerOptions}>
                                     {prepareButtons()}
                                 </div>
                             )
