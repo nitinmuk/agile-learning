@@ -46,7 +46,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteStory }) => {
+const getBriefTitle = title => title.length>20 ? `${title.substring(0,20)}...` : title;
+
+const getBriefContent = content => content.length>70 ? `${content.substring(0,70)}...`:content;
+
+const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteStory, reduceText }) => {
     const classes = useStyles();
 
     return (
@@ -54,6 +58,8 @@ const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteS
         {learningStories.map(ls => renderLearningStory(ls,classes))}
         </Container>
     );
+
+    
 
     function renderLearningStory(ls, classes) {
         return (
@@ -67,7 +73,7 @@ const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteS
                         <Typography className={classes.heading}>{ls.subject}</Typography>
                     </div>
                     <div className={classes.column}>
-                        <Typography className={classes.secondaryHeading}>{ls.title}</Typography>
+                        <Typography className={classes.secondaryHeading}>{reduceText ? getBriefTitle(ls.title):ls.title}</Typography>
                     </div>
                     <div className={classes.column}>
                         <Typography className={classes.secondaryHeading}>{ls.startDate}</Typography>
@@ -79,7 +85,7 @@ const LearningStoryListItem = ({ learningStories, handleEditStory, handleDeleteS
                 <AccordionDetails className={classes.details}>                                       
                     <div>  
                         <Typography variant="caption">
-                            {ls.content}
+                            {reduceText ? getBriefContent(ls.content):ls.content}
                         </Typography>
                     </div>
                 </AccordionDetails>
