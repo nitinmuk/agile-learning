@@ -8,16 +8,16 @@ import API from "../../utils/API";
 
 const useStyles = makeStyles({
     root: {
-      background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-      border: 0,
-      borderRadius: 3,
-      boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-      color: "white",
-      padding: "30px",
+        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+        border: 0,
+        borderRadius: 3,
+        boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+        color: "white",
+        padding: "30px",
     },
-  });
+});
 
-const LearningStoriesContainer = ({ handleEditStory }) => {
+const LearningStoriesContainer = ({ handleEditStory, latestOnly, latestOnlyStatus }) => {
     const classes = useStyles();
     const [learningStories, setLearningStories] = useState();
     const [containerStatus, setContainerStatus] = useState("init");
@@ -35,6 +35,23 @@ const LearningStoriesContainer = ({ handleEditStory }) => {
                 });
         }
         , []);
+
+    /**
+     * returns an array with the latest learning story
+     * as per sent status
+     */
+    const getLatestStoryPerStatus = () => {
+        if (learningStories && learningStories.length) {
+            const latestOnlyLearningStory = [];
+            for (let i = 0; i < learningStories.length; i++) {
+                if (learningStories[i].status === latestOnlyStatus) {
+                    latestOnlyLearningStory.push(learningStories[i])
+                    break;
+                }
+            }
+            return latestOnlyLearningStory
+        }
+    }
     /**
      * calls API to delete learning story and also update learningStories state
      * accordingly i.e. filter out deleted learning story
@@ -52,6 +69,7 @@ const LearningStoriesContainer = ({ handleEditStory }) => {
             console.log("Error during delete: ", error);
         }
     }
+    const learningStoriesToRender = latestOnly ? getLatestStoryPerStatus() : learningStories;
 
     if (!learningStories || containerStatus === "processing") {
         return (
@@ -71,27 +89,31 @@ const LearningStoriesContainer = ({ handleEditStory }) => {
             </Container>
         );
     }
-    else if (learningStories && learningStories.length) {
+    else if (learningStoriesToRender && learningStoriesToRender.length > 0) {
         return (
             <Container className={classes.root}>
                 <LearningStoryListItem
-                    learningStories={learningStories}
+                    learningStories={latestOnly ? getLatestStoryPerStatus() : learningStories}
                     handleEditStory={handleEditStory}
-                    handleDeleteStory={handleDeleteStory} 
+                    handleDeleteStory={handleDeleteStory}
+                    reduceText={latestOnly ? true : false}
                 />
             </Container>
         );
     }
-    else if (learningStories && learningStories.length === 0) {
+    else {
         return (
             <Container>
                 <MessageAlert
-                    message="You have no learning stories to view."
+                    message={
+                        latestOnly ? `You have no story in ${latestOnlyStatus} status`
+                        :"You have no learning stories to view."}
                     severity="info"
                 />
             </Container>
         );
     }
+
 }
 
 export default LearningStoriesContainer;

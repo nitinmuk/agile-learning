@@ -48,7 +48,7 @@ const ViewLearningStoryContainer = ({ learningStoryToView }) => {
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Learning Story
-                </Typography>
+                        </Typography>
                         <form className={classes.form} noValidate>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={8}>
