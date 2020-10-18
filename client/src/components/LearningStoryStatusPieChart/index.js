@@ -60,7 +60,6 @@ const LearningStoryStatusPieChart = () => {
 		setChartStatus("processing");
 		API.getUser()
 			.then(response => {
-				console.log(response.data);
 				initChartdata.datasets[0].data = getStoryStatusData(response.data.learningStories);
 				setChartData(initChartdata);
 				setChartStatus("init");
@@ -92,7 +91,7 @@ const LearningStoryStatusPieChart = () => {
 
 		default:
 			return (
-				<Container>
+				<Container maxwidth="sm">
 					<Typography variant="h6" style={{ textAlign: "center" }}>Learning Story Status Distribution</Typography>
 					<Pie data={chartData} />					
 				</Container>

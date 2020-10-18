@@ -107,8 +107,8 @@ const LearningStoryStudentCountBarChart = () => {
 
         default:
             return (
-                <Container>
-                    <Typography style={{ textAlign: "center" }}>Students Count Per Learning Story</Typography>
+                <Container maxwidth="sm">
+                    <Typography variant="h6" style={{ textAlign: "center" }}>Students Count Per Course</Typography>
                     <Bar
                         data={chartData}
                         width={100}

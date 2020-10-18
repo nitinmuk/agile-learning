@@ -50,7 +50,6 @@ const LearningStoryStatusPieChart = () => {
 	}
 	const getUniqueSubjects = learningStories => {
 		const uniqueSubjects = [];
-		console.log(learningStories);
 		if (learningStories && learningStories.length) {
 			learningStories.forEach(ls => {
 				if (!uniqueSubjects.includes(ls.subject)) {
@@ -97,7 +96,7 @@ const LearningStoryStatusPieChart = () => {
 
 		default:
 			return (
-				<Container>
+				<Container maxwidth="sm">
 					<Typography variant="h6" style={{ textAlign: "center" }}>Subscribed Courses Subject Distribution</Typography>
 					<Pie data={chartData} />	
 				</Container>
