@@ -314,12 +314,11 @@ router.put("/api/subscribeLearningStory/:id", (request, response, next) => {
         response.status(401).send("Authentication Failed");
       } else {
         try {
-          const ls = await LearningStory.findByIdAndUpdate(
+          await LearningStory.findByIdAndUpdate(
             request.params.id,
             { $push: { subscribers: user._id } },
             { new: true }
           );
-          console.log(ls);
           await User.findByIdAndUpdate(
             user._id,
             { $push: { subscribedStories: request.params.id } },
