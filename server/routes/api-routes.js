@@ -49,7 +49,7 @@ router.get(
       response.json({});
     } else {
       const populatedUser = await User.findById(request.user._id).populate({
-        path: "learningStories"
+        path: request.user.student ? "subscribedStories" : "learningStories"
       });
       response.json(populatedUser);
     }
