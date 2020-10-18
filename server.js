@@ -1,20 +1,16 @@
-const bodyParser = require("body-parser");
 const express = require("express");
 const passport = require("./utils/passport");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(passport.initialize());
-app.use(require("./routes/api-routes.js"));
-
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-
+app.use(passport.initialize());
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/agileLearning",
   {
@@ -23,7 +19,7 @@ mongoose.connect(
     useUnifiedTopology: true
   }
 );
-
+app.use(require("./routes/api-routes.js"));
 require("dotenv").config();
 
 app.listen(PORT, () => {
