@@ -7,6 +7,7 @@ import LearningStoriesContainer from "../LearningStoriesContainer";
 import AvailableLearningStoryContainer from "../AvailableLearningStoryContainer";
 import SubscribedLearningStoryContainer from "../SubscribedLearningStoryContainer";
 import ViewLearningStoryContainer from "../ViewLearningStoryContainer";
+import InstructorHome from "../InstructorHome";
 
 
 const Home = (homeProps) => {
@@ -69,6 +70,13 @@ const Home = (homeProps) => {
                     render={(props =>
                         <Logout {...props}
                             handleLogout={homeProps.handleLogout}
+                        />)}
+                />
+                <Route
+                    path="/"
+                    render={(props =>
+                        <InstructorHome {...props}
+                            handleEditStory={handleEditStory}
                         />)}
                 />
             </Switch>
