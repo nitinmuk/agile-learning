@@ -7,6 +7,7 @@ import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
+        //cornsilk
         background: "linear-gradient(45deg, #fff8dc 30%, #fff8dc 90%)",
         border: 0,
         borderRadius: 3,
