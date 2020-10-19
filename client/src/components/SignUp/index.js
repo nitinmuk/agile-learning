@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   root: {
-    background: "#FF8E53",
+    background: "#fffff0", //ivory
     border: 0,
     borderRadius: 3,
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -122,6 +122,7 @@ const SignUp = (props) => {
                     <Grid item xs={12} sm={4}></Grid>
                     <Grid item xs={12} sm={8}>
                       <FormControlLabel
+                      style = {{color:"#f50057"}}
                         label={props.studentUser ? "Sign up as Student" : "Sign up as Instructor"}
                         control={<Switch size="small" checked={props.studentUser} onChange={props.handleStudentUser} />}
                       />
