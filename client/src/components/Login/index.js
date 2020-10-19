@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import MessageAlert from '../MessageAlert';
+import CircularIndeterminate from "../CircularIndeterminate";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
     root: {
-        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+        background: "#FFFFFF",
         border: 0,
         borderRadius: 3,
         boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -41,68 +42,88 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
     const classes = useStyles();
-    return (
-        props.isLoggedIn ? <Redirect to={{ pathname: "/", state: { from: props.location } }} /> :
-            <Container className={classes.root}>
-                <Container component="main" maxWidth="xs">
-                    <div className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Login
-                    </Typography>
-                        <form className={classes.form} noValidate>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant="outlined"
-                                        required
+    if (props.isLoggedIn) {
+        return (
+            <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+        )
+    }
+    else {
+        switch (props.appStatus) {
+            case "processing":
+                return (
+                    <Container component="main" maxWidth="sm">
+                        <CircularIndeterminate />
+                    </Container>
+                )
+            default:
+                return (
+                    <Container className={classes.root}>
+                        <Container component="main" maxWidth="xs">
+                            <div className={classes.paper}>
+                                <Avatar className={classes.avatar}>
+                                    <LockOutlinedIcon />
+                                </Avatar>
+                                <Typography component="h1" variant="h5">
+                                    Login
+                                </Typography>
+                                <form className={classes.form} noValidate>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                variant="outlined"
+                                                required
+                                                fullWidth
+                                                id="email"
+                                                label="Email Address"
+                                                name="email"
+                                                autoComplete="email"
+                                                inputRef={props.emailRef}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                variant="outlined"
+                                                required
+                                                fullWidth
+                                                name="password"
+                                                label="Password"
+                                                type="password"
+                                                id="password"
+                                                autoComplete="current-password"
+                                                inputRef={props.passwordRef}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <Button
+                                        type="submit"
                                         fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        inputRef={props.emailRef}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        variant="outlined"
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="current-password"
-                                        inputRef={props.passwordRef}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                                onClick={props.handleLogin}
-                            >
-                                Sign In
-                        </Button>
-                            <MessageAlert {...props.error} />
-                            <Grid container justify="flex-end">
-                                <Grid item>
-                                    <Link href="/signup" variant="body2">
-                                        Not have an account yet? Sign up
-                                </Link>
-                                </Grid>
-                            </Grid>
-                        </form>
-                    </div>
-                </Container>
-            </Container>
-    );
+                                        variant="contained"
+                                        color="primary"
+                                        className={classes.submit}
+                                        onClick={props.handleLogin}
+                                    >
+                                        Sign In
+                                    </Button>
+                                    <MessageAlert {...props.message} />
+                                    <Grid container justify="flex-end">
+                                        <Grid item>
+                                            <Link href="/signup" variant="body2">
+                                                Not have an account yet? Sign up
+                                            </Link>
+                                        </Grid>
+                                    </Grid>
+                                </form>
+                            </div>
+                        </Container>
+                    </Container>
+                );
+
+        }
+    }
+
+
+
+
 }
 
 export default Login;

@@ -15,6 +15,7 @@ const App = () => {
   const [studentUser, setStudentUser] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
   const [message, setMessage] = useState();
+  const [appStatus, setAppStatus] = useState("init");
   const fNameRef = useRef("");
   const lNameRef = useRef("");
   const emailRef = useRef("");
@@ -58,14 +59,21 @@ const App = () => {
       profileLink: profileLinkRef.current.value
     }
     try {
+      setAppStatus("processing");
       const response = await API.signUpUser(user);
       if (response.status === 201) {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);
-        setStudentUser(response.data.student);       
+        setStudentUser(response.data.student);
+        setAppStatus("init");
       }
     } catch (error) {
       console.log("Error", error);
+      setMessage({
+        message: "OOPs, something went wrong, please try again.",
+        severity:"error"
+      });
+      setAppStatus("error");
     }
   }
   /**
@@ -78,6 +86,7 @@ const App = () => {
     event.preventDefault();
     event.stopPropagation();
     try {
+      setAppStatus("processing");
       const response = await API.login({
         email: emailRef.current.value.trim(),
         password: passwordRef.current.value
@@ -86,11 +95,16 @@ const App = () => {
         localStorage.setItem("token", response.data.token);
         setIsLoggedIn(true);
         setStudentUser(response.data.student);
+        setAppStatus("init");
       }
       else {
         console.log(response);
+        setAppStatus("error");
+        setMessage({ message: "Invalid Email or password", severity: "error" });
       }
     } catch (error) {
+      console.log("Error", error);
+      setAppStatus("error");
       setMessage({ message: "Invalid Email or password", severity: "error" });
     }
     finally {
@@ -123,7 +137,9 @@ const App = () => {
               studentUser={studentUser}
               handleSignUp={handleSignUp}
               handleStudentUser={handleStudentUser}
-              fNameRef={fNameRef} lNameRef={lNameRef} emailRef={emailRef} passwordRef={passwordRef} profileLinkRef={profileLinkRef} />)}
+              fNameRef={fNameRef} lNameRef={lNameRef} emailRef={emailRef} passwordRef={passwordRef} profileLinkRef={profileLinkRef} 
+              message={message}
+              appStatus={appStatus}/>)}
         />
         <Route path="/login"
           render={(props =>
@@ -131,7 +147,8 @@ const App = () => {
               isLoggedIn={isLoggedIn}
               handleLogin={handleLogin}
               emailRef={emailRef} passwordRef={passwordRef}
-              error={message} />)}
+              message={message}
+              appStatus={appStatus} />)}
         />
         <PrivateRoute
           path="/"
