@@ -38,6 +38,7 @@ No testing has been implemented for this application.
 * Mongo, Express, React, Node
 * Material-ui core, icons, lab
 * luxon
+* Passport
 * jsonwebtoken
 * react-chartjs-2
 * react-router-dom
