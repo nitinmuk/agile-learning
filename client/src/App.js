@@ -70,7 +70,7 @@ const App = () => {
     } catch (error) {
       console.log("Error", error);
       setMessage({
-        message: "OOPs, something went wrong, please try again.",
+        message: "Email Account already exists.",
         severity:"error"
       });
       setAppStatus("error");

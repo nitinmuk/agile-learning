@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import { Collapse } from '@material-ui/core';
+import CircularIndeterminate from "../CircularIndeterminate";
+import MessageAlert from '../MessageAlert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   root: {
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    background: "#FF8E53",
     border: 0,
     borderRadius: 3,
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
@@ -43,113 +45,127 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = (props) => {
   const classes = useStyles();
-  return (
-    props.isLoggedIn ? <Redirect to={{ pathname: "/", state: { from: props.location } }} /> :
-      <Container className={classes.root}>
-        <Container component="main" maxWidth="xs">
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
+  if (props.isLoggedIn) {
+    return (<Redirect to={{ pathname: "/", state: { from: props.location } }} />
+    );
+  } else {
+    switch (props.appStatus) {
+      case "processing":
+        return (
+          <Container component="main" maxWidth="sm">
+            <CircularIndeterminate />
+          </Container>
+        )
+      default:
+        return (
+          <Container className={classes.root}>
+            <Container component="main" maxWidth="xs">
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Sign up
           </Typography>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="fname"
-                    name="firstName"
-                    variant="outlined"
-                    required
+                <form className={classes.form} noValidate>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        autoComplete="fname"
+                        name="firstName"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="firstName"
+                        label="First Name"
+                        autoFocus
+                        inputRef={props.fNameRef}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="lastName"
+                        label="Last Name"
+                        name="lastName"
+                        autoComplete="lname"
+                        inputRef={props.lNameRef}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        inputRef={props.emailRef}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        inputRef={props.passwordRef}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={4}></Grid>
+                    <Grid item xs={12} sm={8}>
+                      <FormControlLabel
+                        label={props.studentUser ? "Sign up as Student" : "Sign up as Instructor"}
+                        control={<Switch size="small" checked={props.studentUser} onChange={props.handleStudentUser} />}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Collapse in={!props.studentUser} timeout="auto" unmountOnExit>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="profile Link"
+                          label="profile Link"
+                          type="url"
+                          id="profileLink"
+                          inputRef={props.profileLinkRef}
+                        />
+                      </Collapse>
+                    </Grid>
+                  </Grid>
+                  <Button
+                    type="submit"
                     fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                    inputRef={props.fNameRef}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="lname"
-                    inputRef={props.lNameRef}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    inputRef={props.emailRef}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    inputRef={props.passwordRef}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}></Grid>
-                <Grid item xs={12} sm={8}>
-                  <FormControlLabel
-                    label="Sign up as Student"
-                    control={<Switch size="small" checked={props.studentUser} onChange={props.handleStudentUser} />}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Collapse in={!props.studentUser} timeout="auto" unmountOnExit>
-                    <TextField
-                      variant="outlined"
-                      required
-                      fullWidth
-                      name="profile Link"
-                      label="profile Link"
-                      type="url"
-                      id="profileLink"
-                      inputRef={props.profileLinkRef}
-                    />
-                  </Collapse>
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={props.handleSignUp}
-              >
-                Sign Up
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={props.handleSignUp}
+                  >
+                    Sign Up
           </Button>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Link href="/login" variant="body2">
-                    Already have an account? Sign in
+                  <MessageAlert {...props.message} />
+                  <Grid container justify="flex-end">
+                    <Grid item>
+                      <Link href="/login" variant="body2">
+                        Already have an account? Sign in
               </Link>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Container>
-      </Container>
-  );
-}
+                    </Grid>
+                  </Grid>
+                </form>
+              </div>
+            </Container>
+          </Container>
+        );
+      }
+    }
+  }
 
-export default SignUp;
+  export default SignUp;
