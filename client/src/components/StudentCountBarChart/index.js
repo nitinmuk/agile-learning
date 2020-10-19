@@ -113,9 +113,23 @@ const StudentCountBarChart = () => {
                         data={chartData}
                         width={100}
                         height={50}
-                        options={{
-                            maintainAspectRatio: true
-                        }}
+                        options={
+                            {
+                                maintainAspectRatio: true
+                            },
+                            {
+                                scales: {
+                                    yAxes: [
+                                        {
+                                            ticks: {
+                                                min: 0,
+                                                stepSize: 4,
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
                     />                    
                 </Container>
             );
