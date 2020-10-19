@@ -115,9 +115,7 @@ const StudentCountBarChart = () => {
                         height={50}
                         options={
                             {
-                                maintainAspectRatio: true
-                            },
-                            {
+                                maintainAspectRatio: true,                            
                                 scales: {
                                     yAxes: [
                                         {
