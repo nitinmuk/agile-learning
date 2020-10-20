@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 const Footer = () => {
   const classes = useStyles();
   return (
-    <Container className={classes.root}>
+    <Container maxWidth={false} className={classes.root}>
       <Typography variant="body2" align="center">
         {'Copyright © '}
         <Link color="inherit" href="https://github.com/nitinmuk" target="_blank" rel="noopener noreferrer">

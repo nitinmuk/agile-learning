@@ -32,11 +32,9 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         background: "#deb887", //burlywood color
-        border: 0,
-        borderRadius: 3,
-        boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
         color: "white",
         padding: "30px",
+        height: "100vh"
     },
 }));
 
@@ -57,7 +55,7 @@ const Login = (props) => {
                 )
             default:
                 return (
-                    <Container className={classes.root}>
+                    <Grid className={classes.root}>
                         <Container component="main" maxWidth="xs">
                             <div className={classes.paper}>
                                 <Avatar className={classes.avatar}>
@@ -115,7 +113,7 @@ const Login = (props) => {
                                 </form>
                             </div>
                         </Container>
-                    </Container>
+                    </Grid>
                 );
 
         }
