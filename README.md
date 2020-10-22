@@ -3,9 +3,12 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 ## Description
-An online platform for students to find and subscribe interactive learning courses. Student can subscribe for specific topics where they need assistance rather than one long course. 
-It is built to promote agile way of learning where goal should be to create a learning story/course to teach stundents in a sprint of 2 weeks.
-Also, avid instructors can sign up to publish short courses for students and track those courses. It is built on MERN stack (Mongo, Express, React, Node).
+* An online platform for instructors to publish short courses and students to find and subscribe to those interactive learning courses.
+* It is built to promote an agile way of learning where the goal should be to create a learning story/course to teach students a specific topic in a short time frame like 2-4 weeks.
+* Instructors can sign up to publish short courses/stories for students and track those courses/stories as well. Students can browse published stories/courses and subscribe to any of those courses focusing on specific topics, where they really need assistance.
+ 
+It is built using the MERN stack (Mongo, Express, React, Node) and styled using Material-UI.
+
 
 Find the application live on Heroku [here](https://agile-learning.herokuapp.com/).
 
