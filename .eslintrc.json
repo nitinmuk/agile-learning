@@ -1,5 +1,6 @@
 {
   "parserOptions": {
+    "sourceType": "module",
     "ecmaVersion": 2018,
     "ecmaFeatures": {
       "jsx": true
@@ -11,7 +12,9 @@
     "commonjs": true,
     "node": true
   },
-  "extends": "prettier",
+  "extends": ["prettier",
+    "eslint:recommended",
+    "plugin:react/recommended"],
   "plugins": [
     "prettier"
   ],

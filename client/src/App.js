@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useState, useRef } from "react";
+import { Route, Switch } from "react-router-dom";
 import Header from "./components/Header";
 import "./App.css";
 import SignUp from "./components/SignUp";
@@ -9,7 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CssBaseLine from "@material-ui/core/CssBaseline";
 import isAuthenticated from "./utils/isAuthenticated";
 import API from "./utils/API";
-import Footer from './components/Footer';
+import Footer from "./components/Footer";
 
 const App = () => {
   const [studentUser, setStudentUser] = useState(true);
@@ -29,24 +29,28 @@ const App = () => {
       const response = await API.getUser();
       setStudentUser(response.data.student);
     } catch (error) {
-      console.log(error);
+      setMessage({
+        message: "OOPs.. Something went wrong. Please try again.",
+        severity: "error"
+      });
+      setAppStatus("error");
     }
-  }
+  };
   if (isLoggedIn) {
     initStudentUser();
   }
   /**
    * setting studentUser based on user selection during sign up
-   * @param {switch event} event 
+   * @param {switch event} event
    */
   const handleStudentUser = event => {
     setStudentUser(event.target.checked);
-  }
+  };
   /**
    * handles signup event by calling signUpUser API
-   * @param {signup submit} event 
+   * @param {signup submit} event
    */
-  const handleSignUp = async (event) => {
+  const handleSignUp = async event => {
     event.preventDefault();
     event.stopPropagation();
     const user = {
@@ -57,7 +61,7 @@ const App = () => {
       student: studentUser,
       instructor: !studentUser,
       profileLink: profileLinkRef.current.value
-    }
+    };
     try {
       setAppStatus("processing");
       const response = await API.signUpUser(user);
@@ -68,19 +72,18 @@ const App = () => {
         setAppStatus("init");
       }
     } catch (error) {
-      console.log("Error", error);
       setMessage({
         message: "Email Account already exists.",
-        severity:"error"
+        severity: "error"
       });
       setAppStatus("error");
     }
-  }
+  };
   /**
    * handles event about user submitting login request
    * if login is successful then store jwt token in local storage
    * @TODO: move jwt token to react state from local storage
-   * @param {login event} event 
+   * @param {login event} event
    */
   const handleLogin = async event => {
     event.preventDefault();
@@ -96,18 +99,14 @@ const App = () => {
         setIsLoggedIn(true);
         setStudentUser(response.data.student);
         setAppStatus("init");
-      }
-      else {
-        console.log(response);
+      } else {
         setAppStatus("error");
         setMessage({ message: "Invalid Email or password", severity: "error" });
       }
     } catch (error) {
-      console.log("Error", error);
       setAppStatus("error");
       setMessage({ message: "Invalid Email or password", severity: "error" });
-    }
-    finally {
+    } finally {
       if (emailRef.current) {
         emailRef.current.value = "";
       }
@@ -115,10 +114,10 @@ const App = () => {
         passwordRef.current.value = "";
       }
     }
-  }
+  };
   /**
-   * handler to logout user 
-   * @param {event} event 
+   * handler to logout user
+   * @param {event} event
    */
   function handleLogout() {
     localStorage.removeItem("token");
@@ -130,25 +129,38 @@ const App = () => {
       <Header relevantLinks={getRelevantLinks()} />
       <Switch>
         <Route
-          exact path="/signup"
-          render={(props =>
-            <SignUp {...props}
+          exact
+          path="/signup"
+          render={props => (
+            <SignUp
+              {...props}
               isLoggedIn={isLoggedIn}
               studentUser={studentUser}
               handleSignUp={handleSignUp}
               handleStudentUser={handleStudentUser}
-              fNameRef={fNameRef} lNameRef={lNameRef} emailRef={emailRef} passwordRef={passwordRef} profileLinkRef={profileLinkRef} 
+              fNameRef={fNameRef}
+              lNameRef={lNameRef}
+              emailRef={emailRef}
+              passwordRef={passwordRef}
+              profileLinkRef={profileLinkRef}
               message={message}
-              appStatus={appStatus}/>)}
+              appStatus={appStatus}
+            />
+          )}
         />
-        <Route path="/login"
-          render={(props =>
-            <Login {...props}
+        <Route
+          path="/login"
+          render={props => (
+            <Login
+              {...props}
               isLoggedIn={isLoggedIn}
               handleLogin={handleLogin}
-              emailRef={emailRef} passwordRef={passwordRef}
+              emailRef={emailRef}
+              passwordRef={passwordRef}
               message={message}
-              appStatus={appStatus} />)}
+              appStatus={appStatus}
+            />
+          )}
         />
         <PrivateRoute
           path="/"
@@ -164,15 +176,11 @@ const App = () => {
     if (isLoggedIn) {
       if (studentUser) {
         return ["home", "subscribedStories", "availableStories", "logOut"];
-      } else {
-        return ["home", "createLearningStory", "reviewLearningStory", "logOut"];
       }
+      return ["home", "createLearningStory", "reviewLearningStory", "logOut"];
     }
-    else {
-      return ["logIn"];
-    }
-
+    return ["logIn"];
   }
-}
+};
 
 export default App;
