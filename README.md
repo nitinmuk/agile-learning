@@ -52,7 +52,7 @@ Contributions are welcome. Feel free to fork the project and create a pull reque
 ![Student_Home](./readme/Student_Home.JPG)
 
 ## URL
-https://agile-learning.herokuapp.com/
+https://bit.ly/alnm2020/
 
 ## License
 This application is covered by [MIT](./LICENSE) license
