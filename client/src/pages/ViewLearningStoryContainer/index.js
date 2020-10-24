@@ -103,7 +103,6 @@ const ViewLearningStoryContainer = ({ learningStoryToView }) => {
                   InputProps={{
                     readOnly: true
                   }}
-                  type="date"
                   id="startDate"
                   label="Start Date"
                   helperText="First Session Start Date"
