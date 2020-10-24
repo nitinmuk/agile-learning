@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -16,6 +16,12 @@ import CircularIndeterminate from "../CircularIndeterminate";
 import MessageAlert from "../MessageAlert";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import LuxonUtils from "@date-io/luxon";
+import { DateTime } from "luxon";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -46,22 +52,32 @@ const LearningStory = props => {
   useEffect(() => {
     initLearningStory();
   }, []);
+  const [startDate, setStartDate] = useState(new Date());
+  const [title, setTitle] = useState("");
+  const [sessionCount, setSessionCount] = useState("");
+  const [subject, setSubject] = useState("Computer Science");
+  const [startTime, setStartTime] = useState("");
+  const [storyStatus, setStoryStatus] = useState("draft");
+  const [storyContent, setStoryContent] = useState("");
+  const [storyNote, setStoryNote] = useState("");
+  const [url, setUrl] = useState("");
 
   /**
    * intialize various form fields with learning story sent as prop
    */
   function initLearningStory() {
-    if (props.learningStoryToEdit && props.titleRef.current) {
-      props.titleRef.current.value = props.learningStoryToEdit.title;
-      props.storyContentRef.current.value = props.learningStoryToEdit.content;
-      props.sessionCountRef.current.value =
-        props.learningStoryToEdit.sessionCount;
-      props.subjectRef.current.value = props.learningStoryToEdit.subject;
-      props.startDateRef.current.value = props.learningStoryToEdit.startDate;
-      props.startTimeRef.current.value = props.learningStoryToEdit.startTime;
-      props.storyStatusRef.current.value = props.learningStoryToEdit.status;
-      props.storyNoteRef.current.value = props.learningStoryToEdit.notes;
-      props.urlRef.current.value = props.learningStoryToEdit.sessionLink;
+    if (props.learningStoryToEdit) {
+      setTitle(props.learningStoryToEdit.title);
+      setStoryContent(props.learningStoryToEdit.content);
+      setSessionCount(props.learningStoryToEdit.sessionCount);
+      setSubject(props.learningStoryToEdit.subject);
+      setStartDate(
+        DateTime.fromFormat(props.learningStoryToEdit.startDate, "dd/MM/yyyy")
+      );
+      setStartTime(props.learningStoryToEdit.startTime);
+      setStoryStatus(props.learningStoryToEdit.status);
+      setStoryNote(props.learningStoryToEdit.notes);
+      setUrl(props.learningStoryToEdit.sessionLink);
     }
   }
   switch (props.learningStoryStatus) {
@@ -82,199 +98,204 @@ const LearningStory = props => {
     case "init":
     default:
       return (
-        <Container component="main" maxWidth="md">
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <DescriptionOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Learning Story
-            </Typography>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={8}>
-                  <TextField
-                    autoComplete="title"
-                    name="title"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="title"
-                    label="Title"
-                    autoFocus
-                    helperText="Give a catchy title to get attention."
-                    inputRef={props.titleRef}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    type="number"
-                    id="sessionCount"
-                    label="Duration in hours"
-                    helperText="How many hours of sessions?"
-                    inputRef={props.sessionCountRef}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="subject">Subject</InputLabel>
-                    <Select
-                      labelId="Subject"
-                      id="subject"
+        <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <Container component="main" maxWidth="md">
+            <div className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                <DescriptionOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Learning Story
+              </Typography>
+              <form className={classes.form} noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={8}>
+                    <TextField
+                      autoComplete="title"
+                      name="title"
+                      variant="outlined"
                       required
-                      defaultValue="Computer Science"
-                      inputRef={props.subjectRef}
-                      renderValue={() => props.subjectRef.current.value}
-                      value={props.subjectRef.current.value}
-                      onChange={event =>
-                        (props.subjectRef.current.value = event.target.value)
-                      }
-                    >
-                      <MenuItem value={"Chemistry"}>Chemistry</MenuItem>
-                      <MenuItem value={"Computer Science"}>
-                        Computer Science
-                      </MenuItem>
-                      <MenuItem value={"English"}>English</MenuItem>
-                      <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                      <MenuItem value={"Maths"}>Maths</MenuItem>
-                      <MenuItem value={"Physics"}>Physics</MenuItem>
-                      <MenuItem value={"Other"}>Other</MenuItem>
-                    </Select>
-                    <FormHelperText>Select Related Subject</FormHelperText>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    type="date"
-                    id="startDate"
-                    label="Start Date"
-                    helperText="when will be the first session?"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    inputRef={props.startDateRef}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    type="time"
-                    id="time"
-                    label="time"
-                    helperText="at what time will be the first session?"
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    inputRef={props.startTimeRef}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="storyStatus">Status</InputLabel>
-                    <Select
-                      labelId="Story Status"
-                      id="storyStatus"
-                      defaultValue="draft"
-                      inputRef={props.storyStatusRef}
-                      renderValue={() => {
-                        switch (props.storyStatusRef.current.value) {
-                          default:
-                          case "draft":
-                            return "Draft";
-                          case "published":
-                            return "Publish";
-                          case "cancelled":
-                            return "Cancel";
-                        }
+                      fullWidth
+                      id="title"
+                      label="Title"
+                      autoFocus
+                      helperText="Give a catchy title to get attention."
+                      value={title}
+                      onChange={event => setTitle(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      type="number"
+                      id="sessionCount"
+                      label="Duration in hours"
+                      helperText="How many hours of sessions?"
+                      value={sessionCount}
+                      onChange={event => setSessionCount(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="subject">Subject</InputLabel>
+                      <Select
+                        labelId="Subject"
+                        id="subject"
+                        required
+                        defaultValue="Computer Science"
+                        value={subject}
+                        onChange={event => setSubject(event.target.value)}
+                      >
+                        <MenuItem value={"Chemistry"}>Chemistry</MenuItem>
+                        <MenuItem value={"Computer Science"}>
+                          Computer Science
+                        </MenuItem>
+                        <MenuItem value={"English"}>English</MenuItem>
+                        <MenuItem value={"Hindi"}>Hindi</MenuItem>
+                        <MenuItem value={"Maths"}>Maths</MenuItem>
+                        <MenuItem value={"Physics"}>Physics</MenuItem>
+                        <MenuItem value={"Other"}>Other</MenuItem>
+                      </Select>
+                      <FormHelperText>Select Related Subject</FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <KeyboardDatePicker
+                      autoOk
+                      variant="inline"
+                      inputVariant="outlined"
+                      label="Start Date"
+                      required
+                      helperText="when will be the first session?"
+                      format="dd/MM/yyyy"
+                      disablePast={true}
+                      value={startDate}
+                      onChange={date => setStartDate(date)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      type="time"
+                      id="time"
+                      label="time"
+                      helperText="at what time will be the first session?"
+                      InputLabelProps={{
+                        shrink: true
                       }}
-                      onChange={event =>
-                        (props.storyStatusRef.current.value =
-                          event.target.value)
-                      }
-                    >
-                      <MenuItem value={"draft"}>Draft</MenuItem>
-                      <MenuItem value={"published"}>Publish</MenuItem>
-                      <MenuItem value={"cancelled"}>Cancel</MenuItem>
-                    </Select>
-                    <FormHelperText>
-                      publish once all fields are populated
-                    </FormHelperText>
-                  </FormControl>
+                      value={startTime}
+                      onChange={event => setStartTime(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="storyStatus">Status</InputLabel>
+                      <Select
+                        labelId="Story Status"
+                        id="storyStatus"
+                        defaultValue="draft"
+                        value={storyStatus}
+                        renderValue={() => {
+                          switch (storyStatus) {
+                            default:
+                            case "draft":
+                              return "Draft";
+                            case "published":
+                              return "Publish";
+                            case "cancelled":
+                              return "Cancel";
+                          }
+                        }}
+                        onChange={event => setStoryStatus(event.target.value)}
+                      >
+                        <MenuItem value={"draft"}>Draft</MenuItem>
+                        <MenuItem value={"published"}>Publish</MenuItem>
+                        <MenuItem value={"cancelled"}>Cancel</MenuItem>
+                      </Select>
+                      <FormHelperText>
+                        publish once all fields are populated
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      multiline
+                      id="storyContent"
+                      label="Story Content"
+                      helperText="what will be discussed?"
+                      name="storyContent"
+                      value={storyContent}
+                      onChange={event => setStoryContent(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      multiline
+                      id="storeNote"
+                      label="Notes For Student:"
+                      helperText="Any additional information to pass on to students?"
+                      name="storyContent"
+                      value={storyNote}
+                      onChange={event => setStoryNote(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      id="sessionUrl"
+                      label="Session URL"
+                      helperText="link to join the learning session"
+                      name="sessionUrl"
+                      value={url}
+                      onChange={event => setUrl(event.target.value)}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    multiline
-                    id="storyContent"
-                    label="Story Content"
-                    helperText="what will be discussed?"
-                    name="storyContent"
-                    inputRef={props.storyContentRef}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    id="storeNote"
-                    label="Notes For Student:"
-                    helperText="Any additional information to pass on to students?"
-                    name="storyContent"
-                    inputRef={props.storyNoteRef}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    id="sessionUrl"
-                    label="Session URL"
-                    helperText="link to join the learning session"
-                    name="storyContent"
-                    inputRef={props.urlRef}
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={props.handleLearningStory}
-              >
-                Submit
-              </Button>
-              <MessageAlert {...props.message} />
-            </form>
-          </div>
-        </Container>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={event => {
+                    event.preventDefault();
+                    const ls = {
+                      title: title.trim(),
+                      content: storyContent.trim(),
+                      sessionCount: sessionCount,
+                      subject: subject,
+                      startDate: startDate,
+                      startTime: startTime,
+                      status: storyStatus,
+                      notes: storyNote,
+                      sessionLink: url
+                    };
+                    props.handleLearningStory(ls);
+                  }}
+                >
+                  Submit
+                </Button>
+                <MessageAlert {...props.message} />
+              </form>
+            </div>
+          </Container>
+        </MuiPickersUtilsProvider>
       );
   }
 };
 
 LearningStory.propTypes = {
   learningStoryToEdit: PropTypes.object,
-  titleRef: PropTypes.object.isRequired,
-  storyContentRef: PropTypes.object.isRequired,
-  sessionCountRef: PropTypes.object.isRequired,
-  subjectRef: PropTypes.object.isRequired,
-  startDateRef: PropTypes.object.isRequired,
-  startTimeRef: PropTypes.object.isRequired,
-  storyStatusRef: PropTypes.object.isRequired,
-  storyNoteRef: PropTypes.object.isRequired,
-  urlRef: PropTypes.object.isRequired,
   learningStoryStatus: PropTypes.string.isRequired,
   message: PropTypes.object,
   handleLearningStory: PropTypes.func.isRequired
