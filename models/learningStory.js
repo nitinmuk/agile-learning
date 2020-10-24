@@ -9,6 +9,10 @@ const LearningStorySchema = new Schema({
     type: String,
     default: Date.now()
   },
+  lastUpdateTime: {
+    type: String,
+    default: Date.now()
+  },
   content: {
     type: String,
     trim: true

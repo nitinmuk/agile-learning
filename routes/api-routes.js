@@ -76,7 +76,8 @@ router.post("/api/learningStory", (request, response, next) => {
           const learningStory = await LearningStory.create({
             ...body,
             instructor: user._id,
-            creationDate: Date.now()
+            creationDate: Date.now(),
+            lastUpdateTime: Date.now()
           });
           await User.findByIdAndUpdate(
             user._id,
@@ -114,7 +115,10 @@ router.put("/api/learningStory/:id", (request, response, next) => {
             {
               _id: request.params.id
             },
-            body
+            {
+              ...body,
+              lastUpdateTime: Date.now()
+            }
           );
           response.status(204).end();
         } catch (error) {
@@ -148,7 +152,7 @@ router.get("/api/learningStories", (request, response, next) => {
             }
           });
           learningStories.sort((ls1, ls2) => {
-            const val = parseInt(ls2.creationDate) - parseInt(ls1.creationDate);
+            const val = parseInt(ls2.lastUpdateTime) - parseInt(ls1.lastUpdateTime);
             return val;
           });
           response.json(learningStories);
