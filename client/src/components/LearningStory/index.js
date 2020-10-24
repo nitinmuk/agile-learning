@@ -52,7 +52,7 @@ const LearningStory = props => {
   useEffect(() => {
     initLearningStory();
   }, []);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(DateTime.local());
   const [title, setTitle] = useState("");
   const [sessionCount, setSessionCount] = useState("");
   const [subject, setSubject] = useState("Computer Science");
@@ -240,10 +240,10 @@ const LearningStory = props => {
                       variant="outlined"
                       fullWidth
                       multiline
-                      id="storeNote"
+                      id="storyNote"
                       label="Notes For Student:"
                       helperText="Any additional information to pass on to students?"
-                      name="storyContent"
+                      name="storyNote"
                       value={storyNote}
                       onChange={event => setStoryNote(event.target.value)}
                     />
